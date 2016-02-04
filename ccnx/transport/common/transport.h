@@ -138,6 +138,8 @@ typedef enum TransportIOStatus {
     TransportIOStatus_Timeout = 2
 } TransportIOStatus;
 
+typedef uint64_t CCNxStackTimeout;
+
 /**
  * @def CCNxStackTimeout_Never
  * The receive function is a blocking read that never times out.
@@ -157,6 +159,7 @@ typedef enum TransportIOStatus {
  * whichever comes first.
  */
 #define CCNxStackTimeout_MicroSeconds(_usec_) (&(uint64_t) { _usec_ })
+
 
 /**
  * Initialize transport.  Creates a thread of execution,
