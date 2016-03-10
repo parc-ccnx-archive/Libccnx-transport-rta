@@ -12,8 +12,12 @@ set(CCNX_API_NOTIFY_SOURCE_FILES
 )
 
 
-add_library(ccnx_api_notify         STATIC ${CCNX_API_NOTIFY_SOURCE_FILES})
+add_library(ccnx_api_notify         STATIC ${CCNX_API_NOTIFY_SOURCE_FILES} ${CCNX_API_NOTIFY_HEADERS})
 add_library(ccnx_api_notify.shared  SHARED ${CCNX_API_NOTIFY_SOURCE_FILES})
+
+source_group(Sources FILES ${CCNX_API_NOTIFY_SOURCE_FILES})
+source_group(Sources FILES ${CCNX_API_NOTIFY_HEADERS})
+
 set_target_properties(ccnx_api_notify.shared PROPERTIES 
   C_STANDARD 99
   SOVERSION 1 
