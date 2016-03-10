@@ -76,7 +76,7 @@ LONGBOW_TEST_CASE(Global, cpiRouteEntryList_Append)
 {
     CPIRouteEntryList *list = cpiRouteEntryList_Create();
 
-    CPIRouteEntry *entry = cpiRouteEntry_Create(ccnxName_CreateFromURI("lci:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
+    CPIRouteEntry *entry = cpiRouteEntry_Create(ccnxName_CreateFromCString("ccnx:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
     cpiRouteEntryList_Append(list, entry);
 
     assertTrue(parcArrayList_Size(list->listOfRouteEntries) == 1, "got wrong size, expected %u got %zu", 1, parcArrayList_Size(list->listOfRouteEntries));
@@ -93,10 +93,10 @@ LONGBOW_TEST_CASE(Global, cpiRouteEntryList_Create_Destroy)
 
 LONGBOW_TEST_CASE(Global, cpiRouteEntryList_FromJson)
 {
-    char truth_string[] = "{\"Routes\":[{\"PREFIX\":\"lci:/hello\",\"INTERFACE\":1,\"FLAGS\":0,\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":1}]}";
+    char truth_string[] = "{\"Routes\":[{\"PREFIX\":\"ccnx:/hello\",\"INTERFACE\":1,\"FLAGS\":0,\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":1}]}";
 
     CPIRouteEntryList *truth_list = cpiRouteEntryList_Create();
-    CPIRouteEntry *entry = cpiRouteEntry_Create(ccnxName_CreateFromURI("lci:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
+    CPIRouteEntry *entry = cpiRouteEntry_Create(ccnxName_CreateFromCString("ccnx:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
     cpiRouteEntryList_Append(truth_list, entry);
 
     PARCJSON *truth_json = parcJSON_ParseString(truth_string);
@@ -129,25 +129,25 @@ LONGBOW_TEST_CASE(Global, cpiRouteEntryList_FromJson_EmptyList)
 LONGBOW_TEST_CASE(Global, cpiRouteEntryList_Equals)
 {
     CPIRouteEntryList *list_a = cpiRouteEntryList_Create();
-    CPIRouteEntry *entry_a = cpiRouteEntry_Create(ccnxName_CreateFromURI("lci:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
+    CPIRouteEntry *entry_a = cpiRouteEntry_Create(ccnxName_CreateFromCString("ccnx:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
     cpiRouteEntryList_Append(list_a, entry_a);
 
     CPIRouteEntryList *list_b = cpiRouteEntryList_Create();
-    CPIRouteEntry *entry_b = cpiRouteEntry_Create(ccnxName_CreateFromURI("lci:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
+    CPIRouteEntry *entry_b = cpiRouteEntry_Create(ccnxName_CreateFromCString("ccnx:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
     cpiRouteEntryList_Append(list_b, entry_b);
 
     CPIRouteEntryList *list_c = cpiRouteEntryList_Create();
-    CPIRouteEntry *entry_c = cpiRouteEntry_Create(ccnxName_CreateFromURI("lci:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
+    CPIRouteEntry *entry_c = cpiRouteEntry_Create(ccnxName_CreateFromCString("ccnx:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
     cpiRouteEntryList_Append(list_c, entry_c);
 
     CPIRouteEntryList *unequal_length = cpiRouteEntryList_Create();
-    CPIRouteEntry *entry_d = cpiRouteEntry_Create(ccnxName_CreateFromURI("lci:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
-    CPIRouteEntry *entry_e = cpiRouteEntry_Create(ccnxName_CreateFromURI("lci:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
+    CPIRouteEntry *entry_d = cpiRouteEntry_Create(ccnxName_CreateFromCString("ccnx:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
+    CPIRouteEntry *entry_e = cpiRouteEntry_Create(ccnxName_CreateFromCString("ccnx:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
     cpiRouteEntryList_Append(unequal_length, entry_d);
     cpiRouteEntryList_Append(unequal_length, entry_e);
 
     CPIRouteEntryList *unequal_value = cpiRouteEntryList_Create();
-    CPIRouteEntry *entry_f = cpiRouteEntry_Create(ccnxName_CreateFromURI("lci:/hello"), 2, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
+    CPIRouteEntry *entry_f = cpiRouteEntry_Create(ccnxName_CreateFromCString("ccnx:/hello"), 2, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
     cpiRouteEntryList_Append(unequal_value, entry_f);
 
     assertEqualsContract(cpiRouteEntryList_Equals, list_a, list_b, list_c, unequal_length, unequal_value);
@@ -162,11 +162,11 @@ LONGBOW_TEST_CASE(Global, cpiRouteEntryList_Equals)
 
 LONGBOW_TEST_CASE(Global, cpiRouteEntryList_ToJson)
 {
-    char truth_string[] = "{\"Routes\":[{\"PREFIX\":\"lci:/hello\",\"INTERFACE\":1,\"FLAGS\":0,\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":1}]}";
+    char truth_string[] = "{\"Routes\":[{\"PREFIX\":\"ccnx:/hello\",\"INTERFACE\":1,\"FLAGS\":0,\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":1}]}";
 
     CPIRouteEntryList *list = cpiRouteEntryList_Create();
 
-    CPIRouteEntry *entry = cpiRouteEntry_Create(ccnxName_CreateFromURI("lci:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
+    CPIRouteEntry *entry = cpiRouteEntry_Create(ccnxName_CreateFromCString("lci:/hello"), 1, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
     cpiRouteEntryList_Append(list, entry);
 
     PARCJSON *json = cpiRouteEntryList_ToJson(list);

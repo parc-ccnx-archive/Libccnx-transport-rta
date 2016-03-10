@@ -127,7 +127,7 @@ trafficTools_ReadAndVerifySegment(PARCEventQueue *queue, CCNxName *basename, uin
 CCNxContentObject *
 trafficTools_CreateSignedContentObject()
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/hello/dolly");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/hello/dolly");
     PARCBuffer *payload = parcBuffer_WrapCString("hello");
 
     CCNxContentObject *result = ccnxContentObject_CreateWithDataPayload(name, payload);
@@ -151,7 +151,7 @@ trafficTools_CreateSignedContentObject()
 CCNxContentObject *
 trafficTools_CreateContentObjectWithPayload(PARCBuffer *contents)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/hello/dolly");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/hello/dolly");
 
     CCNxContentObject *result = ccnxContentObject_CreateWithDataPayload(name, contents);
 
@@ -202,7 +202,7 @@ trafficTools_CreateTransportMessageWithSignedContentObjectWithName(RtaConnection
 CCNxInterest *
 trafficTools_CreateInterest(void)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/there/were/bells/on/the/hill");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/there/were/bells/on/the/hill");
     CCNxInterest *interest = ccnxInterest_CreateSimple(name);
     ccnxName_Release(&name);
 
@@ -212,7 +212,7 @@ trafficTools_CreateInterest(void)
 CCNxTlvDictionary *
 trafficTools_CreateDictionaryInterest(void)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/there/were/bells/on/the/hill");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/there/were/bells/on/the/hill");
     CCNxTlvDictionary *interest = ccnxInterest_CreateSimple(name);
     ccnxName_Release(&name);
 
@@ -241,7 +241,7 @@ TransportMessage *
 trafficTools_CreateTransportMessageWithDictionaryInterest(RtaConnection *connection, CCNxTlvDictionary_SchemaVersion schema)
 {
     CCNxTlvDictionary *interest;
-    CCNxName *name = ccnxName_CreateFromURI("lci:/lost/in/space");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/lost/in/space");
 
     CCNxInterestInterface *impl = NULL;
 

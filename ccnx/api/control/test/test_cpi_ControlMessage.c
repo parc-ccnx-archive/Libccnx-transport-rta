@@ -111,7 +111,7 @@ LONGBOW_TEST_CASE(Global, ccnxControl_AcquireRelease)
 
 LONGBOW_TEST_CASE(Global, ccnxControl_CreateAddRouteRequest)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/boose/roo/pie");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/boose/roo/pie");
     CPIRouteEntry *route = cpiRouteEntry_CreateRouteToSelf(name);
     CCNxControl *control = ccnxControl_CreateAddRouteRequest(route);
 
@@ -128,7 +128,7 @@ LONGBOW_TEST_CASE(Global, ccnxControl_CreateAddRouteRequest)
 
 LONGBOW_TEST_CASE(Global, ccnxControl_CreateAddRouteToSelfRequest)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/boose/roo/pie");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/boose/roo/pie");
     CCNxControl *control = ccnxControl_CreateAddRouteToSelfRequest(name);
 
     assertNotNull(control, "Expected control message to be non null");
@@ -145,7 +145,7 @@ LONGBOW_TEST_CASE(Global, ccnxControl_CreateAddRouteToSelfRequest)
 
 LONGBOW_TEST_CASE(Global, ccnxControl_CreateCancelFlowRequest)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/boose/roo/pie");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/boose/roo/pie");
     CCNxControl *control = ccnxControl_CreateCancelFlowRequest(name);
     assertNotNull(control, "Expected control message to be non null");
     assertTrue(ccnxControl_IsCPI(control), "Expected control to be a CPI control message");
@@ -227,7 +227,7 @@ LONGBOW_TEST_CASE(Global, ccnxControl_CreateInterfaceListRequest)
 
 LONGBOW_TEST_CASE(Global, ccnxControl_CreateRemoveRouteRequest)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/boose/roo/pie");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/boose/roo/pie");
     CPIRouteEntry *route = cpiRouteEntry_CreateRouteToSelf(name);
     CCNxControl *control = ccnxControl_CreateRemoveRouteRequest(route);
 
@@ -245,7 +245,7 @@ LONGBOW_TEST_CASE(Global, ccnxControl_CreateRemoveRouteRequest)
 
 LONGBOW_TEST_CASE(Global, ccnxControl_CreateRemoveRouteToSelfRequest)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/boose/roo/pie");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/boose/roo/pie");
     CCNxControl *control = ccnxControl_CreateRemoveRouteToSelfRequest(name);
 
     assertNotNull(control, "Expected control message to be non null");
@@ -274,7 +274,7 @@ LONGBOW_TEST_CASE(Global, ccnxControl_CreateRouteListRequest)
 
 LONGBOW_TEST_CASE(Global, ccnxControl_CreateCPIRequest)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/boose/roo/pie");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/boose/roo/pie");
     PARCJSON *cpiRequest = cpiCancelFlow_CreateRequest(name);
 
     CCNxControl *control = ccnxControl_CreateCPIRequest(cpiRequest);
@@ -361,7 +361,7 @@ LONGBOW_TEST_CASE(Global, ccnxControl_IsNotification)
 
 LONGBOW_TEST_CASE(Global, ccnxControl_GetNotifyStatus)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/boose/roo/pie");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/boose/roo/pie");
 
     NotifyStatus *expected = notifyStatus_Create(1, notifyStatusCode_CONNECTION_OPEN, name, "There's a spider behind you.");
 

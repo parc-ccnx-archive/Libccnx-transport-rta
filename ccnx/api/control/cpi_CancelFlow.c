@@ -90,7 +90,7 @@ cpiCancelFlow_GetFlowName(const PARCJSON *controlMessage)
     PARCBuffer *sBuf = parcJSONValue_GetString(value);
     const char *uri = parcBuffer_Overlay(sBuf, 0);
 
-    CCNxName *name = ccnxName_CreateFromURI(uri);
+    CCNxName *name = ccnxName_CreateFromCString(uri);
 
     return name;
 }

@@ -182,7 +182,7 @@ notifyStatus_ParseJSON(const PARCJSON *json)
             PARCBuffer *sBuf = parcJSONValue_GetString(nameValue);
             const char *p = parcBuffer_Overlay(sBuf, 0);
             if (p != NULL) {
-                name = ccnxName_CreateFromURI(p);
+                name = ccnxName_CreateFromCString(p);
             }
         }
 

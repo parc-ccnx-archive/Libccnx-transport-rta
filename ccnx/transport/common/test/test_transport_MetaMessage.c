@@ -91,7 +91,7 @@ LONGBOW_TEST_FIXTURE_TEARDOWN(Global)
 
 LONGBOW_TEST_CASE(Global, ccnxMetaMessage_Acquire_Release)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/foo/bar");
     CCNxInterest *interest = ccnxInterest_CreateSimple(name);
     CCNxMetaMessage *portalMessage = ccnxMetaMessage_CreateFromInterest(interest);
 
@@ -115,7 +115,7 @@ LONGBOW_TEST_CASE(Global, ccnxMetaMessage_Acquire_Release)
 
 LONGBOW_TEST_CASE(Global, ccnxMetaMessage_CreateFromContentObject)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/foo/bar");
     PARCBuffer *payload = parcBuffer_WrapCString("This is some data. It's not good data, but it is data.");
     CCNxContentObject *contentObject = ccnxContentObject_CreateWithDataPayload(name, payload);
 
@@ -137,7 +137,7 @@ LONGBOW_TEST_CASE(Global, ccnxMetaMessage_CreateFromControl)
 
 LONGBOW_TEST_CASE(Global, ccnxMetaMessage_CreateFromInterest)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/foo/bar");
     CCNxInterest *interest = ccnxInterest_CreateSimple(name);
 
     CCNxMetaMessage *portalMessage = ccnxMetaMessage_CreateFromInterest(interest);
@@ -157,7 +157,7 @@ LONGBOW_TEST_CASE(Global, ccnxMetaMessage_Display)
 
 LONGBOW_TEST_CASE(Global, ccnxMetaMessage_GetContentObject)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/foo/bar");
     PARCBuffer *payload = parcBuffer_WrapCString("This is some data. It's not good data, but it is data.");
     CCNxContentObject *contentObject = ccnxContentObject_CreateWithDataPayload(name, payload);
 
@@ -187,7 +187,7 @@ LONGBOW_TEST_CASE(Global, ccnxMetaMessage_GetControl)
 
 LONGBOW_TEST_CASE(Global, ccnxMetaMessage_GetInterest)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/foo/bar");
     CCNxInterest *interest = ccnxInterest_CreateSimple(name);
     CCNxMetaMessage *portalMessage = ccnxMetaMessage_CreateFromInterest(interest);
     CCNxInterest *reference = ccnxMetaMessage_GetInterest(portalMessage);
@@ -202,7 +202,7 @@ LONGBOW_TEST_CASE(Global, ccnxMetaMessage_GetInterest)
 
 LONGBOW_TEST_CASE(Global, ccnxMetaMessage_IsContentObject)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/foo/bar");
     PARCBuffer *payload = parcBuffer_WrapCString("This is some data. It's not good data, but it is data.");
     CCNxContentObject *contentObject = ccnxContentObject_CreateWithDataPayload(name, payload);
 
@@ -227,7 +227,7 @@ LONGBOW_TEST_CASE(Global, ccnxMetaMessage_IsControl)
 
 LONGBOW_TEST_CASE(Global, ccnxMetaMessage_IsInterest)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/foo/bar");
     CCNxInterest *interest = ccnxInterest_CreateSimple(name);
     CCNxMetaMessage *portalMessage = ccnxMetaMessage_CreateFromInterest(interest);
 
@@ -242,7 +242,7 @@ LONGBOW_TEST_CASE(Global, ccnxMetaMessage_IsInterest)
 
 LONGBOW_TEST_CASE(Global, ccnxMetaMessage_EncodeDecode)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/foo/bar");
     CCNxInterest *interest = ccnxInterest_CreateSimple(name);
     ccnxName_Release(&name);
 

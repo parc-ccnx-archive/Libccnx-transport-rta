@@ -76,7 +76,7 @@ LONGBOW_TEST_FIXTURE_TEARDOWN(Global)
 
 LONGBOW_TEST_CASE(Global, cpiAck_CreateAck)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/foo/bar");
     CPIRouteEntry *route = cpiRouteEntry_CreateRouteToSelf(name);
     PARCJSON *request = cpiForwarding_CreateAddRouteRequest(route);
 
@@ -92,7 +92,7 @@ LONGBOW_TEST_CASE(Global, cpiAck_CreateAck)
 
 LONGBOW_TEST_CASE(Global, cpiAck_CreateNack)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/foo/bar");
     CPIRouteEntry *route = cpiRouteEntry_CreateRouteToSelf(name);
     PARCJSON *request = cpiForwarding_CreateAddRouteRequest(route);
 

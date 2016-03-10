@@ -69,7 +69,7 @@ LONGBOW_TEST_FIXTURE_TEARDOWN(Global)
 
 LONGBOW_TEST_CASE(Global, notifyStatus_ToJSON)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
     NotifyStatus *expected = notifyStatus_Create(1, notifyStatusCode_CONNECTION_OPEN, name, "foo");
 
     PARCJSON *json = notifyStatus_ToJSON(expected);

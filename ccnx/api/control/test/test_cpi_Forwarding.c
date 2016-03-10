@@ -99,9 +99,9 @@ LONGBOW_TEST_CASE(Global, cpiForwarding_AddRoute_1)
     // The JSON representation depends on the system sockaddr_in format, which
     // varies platform to platform.
 #if defined(__APPLE__)
-    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"REGISTER\":{\"PREFIX\":\"lci:/howdie/stranger\",\"INTERFACE\":55,\"FLAGS\":0,\"NEXTHOP\":{\"ADDRESSTYPE\":\"INET\",\"DATA\":\"AAIAAAQDAgEAAAAAAAAAAA==\"},\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":200,\"LIFETIME\":[3600,0]}}}";
+    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"REGISTER\":{\"PREFIX\":\"ccnx:/howdie/stranger\",\"INTERFACE\":55,\"FLAGS\":0,\"NEXTHOP\":{\"ADDRESSTYPE\":\"INET\",\"DATA\":\"AAIAAAQDAgEAAAAAAAAAAA==\"},\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":200,\"LIFETIME\":[3600,0]}}}";
 #elif defined(__linux__)
-    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"REGISTER\":{\"PREFIX\":\"lci:/howdie/stranger\",\"INTERFACE\":55,\"FLAGS\":0,\"NEXTHOP\":{\"ADDRESSTYPE\":\"INET\",\"DATA\":\"AgAAAAQDAgEAAAAAAAAAAA==\"},\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":200,\"LIFETIME\":[3600,0]}}}";
+    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"REGISTER\":{\"PREFIX\":\"ccnx:/howdie/stranger\",\"INTERFACE\":55,\"FLAGS\":0,\"NEXTHOP\":{\"ADDRESSTYPE\":\"INET\",\"DATA\":\"AgAAAAQDAgEAAAAAAAAAAA==\"},\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":200,\"LIFETIME\":[3600,0]}}}";
 #else
     // Case 1033
     testUnimplemented("Platform not supported");
@@ -110,7 +110,7 @@ LONGBOW_TEST_CASE(Global, cpiForwarding_AddRoute_1)
 
     char truth[1024];
 
-    CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+    CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
     unsigned ifidx = 55;
     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
     struct timeval lifetime = { 3600, 0 };
@@ -142,9 +142,9 @@ LONGBOW_TEST_CASE(Global, cpiForwarding_AddRoute_2)
     // The JSON representation depends on the system sockaddr_in format, which
     // varies platform to platform.
 #if defined(__APPLE__)
-    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"REGISTER\":{\"PREFIX\":\"lci:/howdie/stranger\",\"INTERFACE\":55,\"FLAGS\":0,\"NEXTHOP\":{\"ADDRESSTYPE\":\"INET\",\"DATA\":\"AAIAAAQDAgEAAAAAAAAAAA==\"},\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":200}}}";
+    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"REGISTER\":{\"PREFIX\":\"ccnx:/howdie/stranger\",\"INTERFACE\":55,\"FLAGS\":0,\"NEXTHOP\":{\"ADDRESSTYPE\":\"INET\",\"DATA\":\"AAIAAAQDAgEAAAAAAAAAAA==\"},\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":200}}}";
 #elif defined(__linux__)
-    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"REGISTER\":{\"PREFIX\":\"lci:/howdie/stranger\",\"INTERFACE\":55,\"FLAGS\":0,\"NEXTHOP\":{\"ADDRESSTYPE\":\"INET\",\"DATA\":\"AgAAAAQDAgEAAAAAAAAAAA==\"},\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":200}}}";
+    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"REGISTER\":{\"PREFIX\":\"ccnx:/howdie/stranger\",\"INTERFACE\":55,\"FLAGS\":0,\"NEXTHOP\":{\"ADDRESSTYPE\":\"INET\",\"DATA\":\"AgAAAAQDAgEAAAAAAAAAAA==\"},\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":200}}}";
 #else
     // Case 1033
     testUnimplemented("Platform not supported");
@@ -153,7 +153,7 @@ LONGBOW_TEST_CASE(Global, cpiForwarding_AddRoute_2)
 
     char truth[1024];
 
-    CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+    CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
     unsigned ifidx = 55;
     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
     unsigned cost = 200;
@@ -180,10 +180,10 @@ LONGBOW_TEST_CASE(Global, cpiForwarding_AddRoute_2)
  */
 LONGBOW_TEST_CASE(Global, cpiForwarding_AddRoute_3)
 {
-    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"REGISTER\":{\"PREFIX\":\"lci:/howdie/stranger\",\"INTERFACE\":55,\"FLAGS\":0,\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":200}}}";
+    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"REGISTER\":{\"PREFIX\":\"ccnx:/howdie/stranger\",\"INTERFACE\":55,\"FLAGS\":0,\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":200}}}";
     char truth[1024];
 
-    CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+    CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
     unsigned ifidx = 55;
     unsigned cost = 200;
 
@@ -212,10 +212,10 @@ LONGBOW_TEST_CASE(Global, cpiForwarding_AddRouteJsonTag)
 
 LONGBOW_TEST_CASE(Global, cpiForwarding_AddRouteToSelf)
 {
-    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"REGISTER\":{\"PREFIX\":\"lci:/howdie/stranger\",\"INTERFACE\":2147483647,\"FLAGS\":0,\"PROTOCOL\":\"LOCAL\",\"ROUTETYPE\":\"LONGEST\",\"COST\":0}}}";
+    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"REGISTER\":{\"PREFIX\":\"ccnx:/howdie/stranger\",\"INTERFACE\":2147483647,\"FLAGS\":0,\"PROTOCOL\":\"LOCAL\",\"ROUTETYPE\":\"LONGEST\",\"COST\":0}}}";
     char truth[1024];
 
-    CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+    CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
     CCNxControl *control = ccnxControl_CreateAddRouteToSelfRequest(prefix);
     uint64_t seqnum = cpi_GetSequenceNumber(control);
     sprintf(truth, truth_format, seqnum);
@@ -231,10 +231,10 @@ LONGBOW_TEST_CASE(Global, cpiForwarding_AddRouteToSelf)
 
 LONGBOW_TEST_CASE(Global, cpiForwarding_RemoveRoute)
 {
-    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"UNREGISTER\":{\"PREFIX\":\"lci:/howdie/stranger\",\"INTERFACE\":55,\"FLAGS\":0,\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":200}}}";
+    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"UNREGISTER\":{\"PREFIX\":\"ccnx:/howdie/stranger\",\"INTERFACE\":55,\"FLAGS\":0,\"PROTOCOL\":\"STATIC\",\"ROUTETYPE\":\"LONGEST\",\"COST\":200}}}";
     char truth[1024];
 
-    CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+    CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
     unsigned ifidx = 55;
     unsigned cost = 200;
 
@@ -264,10 +264,10 @@ LONGBOW_TEST_CASE(Global, cpiForwarding_RemoveRouteJsonTag)
 
 LONGBOW_TEST_CASE(Global, cpiForwarding_RemoveRouteToSelf)
 {
-    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"UNREGISTER\":{\"PREFIX\":\"lci:/howdie/stranger\",\"INTERFACE\":2147483647,\"FLAGS\":0,\"PROTOCOL\":\"LOCAL\",\"ROUTETYPE\":\"LONGEST\",\"COST\":0}}}";
+    char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"UNREGISTER\":{\"PREFIX\":\"ccnx:/howdie/stranger\",\"INTERFACE\":2147483647,\"FLAGS\":0,\"PROTOCOL\":\"LOCAL\",\"ROUTETYPE\":\"LONGEST\",\"COST\":0}}}";
     char truth[1024];
 
-    CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+    CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
     CCNxControl *control = ccnxControl_CreateRemoveRouteToSelfRequest(prefix);
 
     uint64_t seqnum = cpi_GetSequenceNumber(control);
@@ -284,7 +284,7 @@ LONGBOW_TEST_CASE(Global, cpiForwarding_RemoveRouteToSelf)
 
 LONGBOW_TEST_CASE(Global, cpiForwarding_RouteFromControlMessage)
 {
-    CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+    CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
     unsigned ifidx = 55;
     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
     unsigned cost = 200;

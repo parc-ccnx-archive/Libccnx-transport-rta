@@ -403,7 +403,7 @@ cpiRouteEntry_FromJson(PARCJSON *json)
     PARCJSONValue *value = parcJSON_GetValueByName(routeJson, cpiPrefix);
     assertNotNull(value, "Couldn't locate tag %s in: %s", cpiPrefix, parcJSON_ToString(json));
     PARCBuffer *sBuf = parcJSONValue_GetString(value);
-    CCNxName *prefix = ccnxName_CreateFromURI(parcBuffer_Overlay(sBuf, 0));
+    CCNxName *prefix = ccnxName_CreateFromCString(parcBuffer_Overlay(sBuf, 0));
 
     const char *symbolicName = NULL;
     value = parcJSON_GetValueByName(routeJson, cpiSymbolic);

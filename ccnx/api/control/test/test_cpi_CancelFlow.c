@@ -78,9 +78,9 @@ LONGBOW_TEST_FIXTURE_TEARDOWN(Global)
 
 LONGBOW_TEST_CASE(Global, cpiCancelFlow_CreateRequest)
 {
-    const char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"CPI_CANCEL_FLOW\":{\"FLOW_NAME\":\"lci:/who/doesnt/like/pie\"}}}";
+    const char truth_format[] = "{\"CPI_REQUEST\":{\"SEQUENCE\":%" PRIu64 ",\"CPI_CANCEL_FLOW\":{\"FLOW_NAME\":\"ccnx:/who/doesnt/like/pie\"}}}";
 
-    CCNxName *name = ccnxName_CreateFromURI("lci:/who/doesnt/like/pie");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/who/doesnt/like/pie");
     PARCJSON *cpiRequest = cpiCancelFlow_CreateRequest(name);
     CCNxControl *controlRequest = ccnxControl_CreateCPIRequest(cpiRequest);
 
@@ -100,7 +100,7 @@ LONGBOW_TEST_CASE(Global, cpiCancelFlow_CreateRequest)
 
 LONGBOW_TEST_CASE(Global, cpiCancelFlow_NameFromControlMessage)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/who/doesnt/like/pie");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/who/doesnt/like/pie");
     PARCJSON *cpiRequest = cpiCancelFlow_CreateRequest(name);
     CCNxControl *controlRequest = ccnxControl_CreateCPIRequest(cpiRequest);
 
