@@ -198,7 +198,6 @@ set(libccnx_transport_rta_libraries
 foreach(lib ${libccnx_transport_rta_libraries})
   install(TARGETS ${lib} LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
   set_property(TARGET ${lib} PROPERTY C_STANDARD 99)
-  set_property(TARGET ${lib} PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 endforeach()
 
 install(FILES ${BASE_HDRS} DESTINATION include/ccnx/transport )
