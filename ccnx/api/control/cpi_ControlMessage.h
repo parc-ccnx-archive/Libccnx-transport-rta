@@ -301,7 +301,7 @@ CCNxControl *ccnxControl_CreateRemoveRouteRequest(const CPIRouteEntry *route);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/parc/csl/media/thingie");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/parc/csl/media/thingie");
  *
  *     CCNxControl *control = ccnxControl_CreateAddRouteToSelfRequest(name);
  *     ...
@@ -331,7 +331,7 @@ CCNxControl *ccnxControl_CreateAddRouteToSelfRequest(const CCNxName *name);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/parc/csl/media/thingie");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/parc/csl/media/thingie");
  *
  *     CCNxControl *control = ccnxControl_CreateRemoveRouteToSelfRequest(name);
  *     ...
@@ -359,7 +359,7 @@ CCNxControl *ccnxControl_CreateRemoveRouteToSelfRequest(const CCNxName *name);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/boose/roo/pie");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/boose/roo/pie");
  *     PARCJSON *cpiRequest = cpiCancelFlow_CreateRequest(name);
  *     CCNxControl *control = ccnxControl_CreateCPIRequest(cpiRequest);
  *
@@ -493,7 +493,7 @@ CCNxControl *ccnxControl_CreateFlushRequest(void);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/boose/roo/pie");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/boose/roo/pie");
  *     CCNxControl *control = ccnxControl_CreateCancelFlowRequest(name);
  *
  *     ...

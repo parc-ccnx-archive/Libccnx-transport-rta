@@ -46,9 +46,9 @@
 #include <ccnx/api/control/cpi_ControlMessage.h>
 #include <ccnx/common/ccnx_ContentObject.h>
 
-#include <parc/security/parc_PublicKeySignerPkcs12Store.h>
+#include <parc/security/parc_Pkcs12KeyStore.h>
+#include <parc/security/parc_PublicKeySigner.h>
 #include <parc/security/parc_Security.h>
-#include <parc/algol/parc_Memory.h>
 #include <parc/algol/parc_SafeMemory.h>
 
 #include <ccnx/transport/transport_rta/config/config_All.h>
@@ -104,7 +104,7 @@ MultipleConnections_createParams(const char *local_name, const char *keystore_na
         tlvCodec_ConnectionConfig(
             localForwarder_ConnectionConfig(ccnxConnectionConfig_Create(), local_name)));
 
-    publicKeySignerPkcs12Store_ConnectionConfig(connConfig, keystore_name, keystore_passwd);
+    publicKeySigner_ConnectionConfig(connConfig, keystore_name, keystore_passwd);
 
 
     // add the special nonce
@@ -242,10 +242,10 @@ stackSetup(const char *alice_nonce, const char *bob_nonce)
     unlink(alice_keystore_name);
     unlink(bob_keystore_name);
 
-    bool success = parcPublicKeySignerPkcs12Store_CreateFile(alice_keystore_name, "23456", "alice", 1024, 30);
-    assertTrue(success, "parcPublicKeySignerPkcs12Store_CreateFile() failed.");
-    success = parcPublicKeySignerPkcs12Store_CreateFile(bob_keystore_name, "34567", "bob", 2048, 15);
-    assertTrue(success, "parcPublicKeySignerPkcs12Store_CreateFile() failed.");
+    bool success = parcPkcs12KeyStore_CreateFile(alice_keystore_name, "23456", "alice", 1024, 30);
+    assertTrue(success, "parcPkcs12Store_CreateFile() failed.");
+    success = parcPkcs12KeyStore_CreateFile(bob_keystore_name, "34567", "bob", 2048, 15);
+    assertTrue(success, "parcPkcs12Store_CreateFile() failed.");
 
     alice_params = MultipleConnections_createParams(local_name, alice_keystore_name, "23456", alice_nonce);
     bob_params = MultipleConnections_createParams(local_name, bob_keystore_name, "34567", bob_nonce);

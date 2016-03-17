@@ -1,18 +1,18 @@
 /*
  * Copyright (c) 2013-2015, Xerox Corporation (Xerox)and Palo Alto Research Center (PARC)
  * All rights reserved.
- *  
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *  
+ *
  *     * Redistributions of source code must retain the above copyright
  *       notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution. 
+ *       documentation and/or other materials provided with the distribution.
  *     * Patent rights are not granted under this agreement. Patent rights are
  *       available under FRAND terms.
- *  
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -37,11 +37,11 @@
 
 #include <LongBow/unit-test.h>
 
+#include <parc/security/parc_Pkcs12KeyStore.h>
 #include <parc/security/parc_Security.h>
 
 #include <ccnx/api/control/cpi_ControlMessage.h>
 
-#include <parc/security/parc_PublicKeySignerPkcs12Store.h>
 #include <parc/algol/parc_SafeMemory.h>
 
 #include <ccnx/transport/transport_rta/config/config_All.h>
@@ -85,8 +85,8 @@ _createParams(const char *local_name, const char *keystore_name, const char *key
 
     connConfig = tlvCodec_ConnectionConfig(connConfig);
 
-    publicKeySignerPkcs12Store_ConnectionConfig(connConfig, keystore_name, keystore_passwd);
-    
+    publicKeySigner_ConnectionConfig(connConfig, keystore_name, keystore_passwd);
+
     CCNxTransportConfig *result = ccnxTransportConfig_Create(stackConfig, connConfig);
     ccnxStackConfig_Release(&stackConfig);
     return result;
@@ -105,7 +105,7 @@ _stopThreaded(TestData *data)
     // blocks until done
     rtaFramework_Shutdown(data->framework);
     printf ("Finished shutdown pid %d\n", getpid());
-    
+
 }
 
 static void
@@ -140,7 +140,7 @@ _commonSetup(void)
 
     sprintf(data->keystorePassword, "23439429");
 
-    bool success = parcPublicKeySignerPkcs12Store_CreateFile(data->keystoreName, data->keystorePassword, "user", 1024, 30);
+    bool success = parcPkcs12KeyStore_CreateFile(data->keystoreName, data->keystorePassword, "user", 1024, 30);
     assertTrue(success, "parcPublicKeySignerPkcs12Store_CreateFile() failed.");
 	close(fd);
 
@@ -158,7 +158,7 @@ _commonTeardown(TestData *data)
     } else {
         _stopNonThreaded(data);
     }
-    
+
     parcRingBuffer1x1_Release(&data->commandRingBuffer);
     parcNotifier_Release(&data->commandNotifier);
 
@@ -216,9 +216,9 @@ static void
 _openConnection(RtaFramework *framework, CCNxTransportConfig *transportConfig, int stack_id, int socketPairOutput[])
 {
     socketpair(PF_LOCAL, SOCK_STREAM, 0, socketPairOutput);
-    
+
     struct timeval timeout = {.tv_sec = 10, .tv_usec = 0};
-    
+
     setsockopt(socketPairOutput[0], SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(timeout));
     setsockopt(socketPairOutput[0], SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
     setsockopt(socketPairOutput[1], SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(timeout));
@@ -269,7 +269,7 @@ LONGBOW_TEST_RUNNER(rta_Framework_Commands)
 LONGBOW_TEST_RUNNER_SETUP(rta_Framework_Commands)
 {
 	printf("\n********\n%s starting\n\n", __func__);
-   
+
 	srandom((int) time(NULL));
     parcMemory_SetInterface(&PARCSafeMemoryAsPARCMemory);
     return LONGBOW_STATUS_SUCCEEDED;
@@ -297,10 +297,10 @@ LONGBOW_TEST_FIXTURE_SETUP(Local)
 #else
     pthread_setname_np(pthread_self(), longBowTestCase_GetName(testCase));
 #endif
-    
+
     TestData *data = _commonSetup();
     _runNonThreaded(data);
-    
+
     longBowTestCase_SetClipBoardData(testCase, data);
     return LONGBOW_STATUS_SUCCEEDED;
 }
@@ -325,10 +325,10 @@ LONGBOW_TEST_CASE(Local, _rtaFramework_ExecuteCloseConnection)
     int stack_id = 5;
 
     CCNxTransportConfig *params = _createParams(data->bentpipe_LocalName, data->keystoreName, data->keystorePassword);
-    
+
     RtaCommandCreateProtocolStack *createStack =
         rtaCommandCreateProtocolStack_Create(stack_id, ccnxTransportConfig_GetStackConfig(params));
-    
+
     _rtaFramework_ExecuteCreateStack(data->framework, createStack);
     rtaCommandCreateProtocolStack_Release(&createStack);
 

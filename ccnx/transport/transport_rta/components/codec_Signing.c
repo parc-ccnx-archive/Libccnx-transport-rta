@@ -35,8 +35,12 @@
 
 #include <parc/algol/parc_Memory.h>
 
-#include <parc/security/parc_PublicKeySignerPkcs12Store.h>
-#include <parc/security/parc_SymmetricSignerFileStore.h>
+#include <parc/security/parc_PublicKeySigner.h>
+#include <parc/security/parc_Pkcs12KeyStore.h>
+#include <parc/security/parc_SymmetricKeySigner.h>
+#include <parc/security/parc_SymmetricKeyStore.h>
+#include <parc/security/parc_KeyStore.h>
+#include <parc/security/parc_Signer.h>
 #include <parc/security/parc_CryptoHashType.h>
 
 #include <ccnx/transport/transport_rta/config/config_Signer.h>
@@ -50,22 +54,31 @@ component_Codec_GetSigner(RtaConnection *conn)
     SignerType signertype = signer_GetImplementationType(rtaConnection_GetParameters(conn));
 
     switch (signertype) {
-        case SIGNER_SymmetricKeySignerFileStore: {
+        case SignerType_SymmetricKeySigner: {
             struct symmetrickeysigner_params params;
-            bool success = symmetricKeySignerFileStore_GetConnectionParams(rtaConnection_GetParameters(conn), &params);
-            assertTrue(success, "Could not retrieve publicKeySignerPkcs12Store_GetConnectionParams");
+            bool success = symmetricKeySigner_GetConnectionParams(rtaConnection_GetParameters(conn), &params);
+            assertTrue(success, "Could not retrieve symmetricKeySigner_GetConnectionParams");
 
-            signer = parcSigner_Create(parcSymmetricSignerFileStore_OpenFile(params.filename, params.password, PARC_HASH_SHA256));
+            PARCSymmetricKeyStore *symmetricKeyStore = parcSymmetricKeyStore_OpenFile(params.filename, params.password, PARC_HASH_SHA256);
+            PARCSymmetricKeySigner *symmetricKeySigner = parcSymmetricKeySigner_Create(symmetricKeyStore, PARC_HASH_SHA256);
+            parcSymmetricKeyStore_Release(&symmetricKeyStore);
+
+            signer = parcSigner_Create(symmetricKeySigner, PARCSymmetricKeySignerAsSigner);
             assertNotNull(signer, "got null opening FileKeystore '%s'\n", params.filename);
             break;
         }
 
-        case SIGNER_PublicKeySignerPkcs12Store: {
+        case SignerType_PublicKeySigner: {
             struct publickeysigner_params params;
-            bool success = publicKeySignerPkcs12Store_GetConnectionParams(rtaConnection_GetParameters(conn), &params);
-            assertTrue(success, "Could not retrieve publicKeySignerPkcs12Store_GetConnectionParams");
+            bool success = publicKeySigner_GetConnectionParams(rtaConnection_GetParameters(conn), &params);
+            assertTrue(success, "Could not retrieve publicKeySigner_GetConnectionParams");
 
-            signer = parcSigner_Create(parcPublicKeySignerPkcs12Store_Open(params.filename, params.password, PARC_HASH_SHA256));
+            PARCPkcs12KeyStore *pkcs12KeyStore = parcPkcs12KeyStore_Open(params.filename, params.password, PARC_HASH_SHA256);
+            PARCKeyStore *keyStore = parcKeyStore_Create(pkcs12KeyStore, PARCPkcs12KeyStoreAsKeyStore);
+            PARCPublicKeySigner *publicKeySigner = parcPublicKeySigner_Create(keyStore, PARCSigningAlgorithm_RSA, PARC_HASH_SHA256);
+            parcKeyStore_Release(&keyStore);
+
+            signer = parcSigner_Create(publicKeySigner, PARCPublicKeySignerAsSigner);
             assertNotNull(signer, "got null opening FileKeystore '%s'\n", params.filename);
             break;
         }

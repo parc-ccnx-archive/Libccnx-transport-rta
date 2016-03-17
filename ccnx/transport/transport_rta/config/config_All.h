@@ -52,10 +52,10 @@
 #include <ccnx/transport/transport_rta/config/config_InMemoryVerifier.h>
 
 #include <ccnx/transport/transport_rta/config/config_ProtocolStack.h>
-#include <ccnx/transport/transport_rta/config/config_PublicKeySignerPkcs12Store.h>
+#include <ccnx/transport/transport_rta/config/config_PublicKeySigner.h>
 
 #include <ccnx/transport/transport_rta/config/config_Signer.h>
-#include <ccnx/transport/transport_rta/config/config_SymmetricKeySignerFileStore.h>
+#include <ccnx/transport/transport_rta/config/config_SymmetricKeySigner.h>
 
 #include <ccnx/transport/transport_rta/config/config_TestingComponent.h>
 #endif

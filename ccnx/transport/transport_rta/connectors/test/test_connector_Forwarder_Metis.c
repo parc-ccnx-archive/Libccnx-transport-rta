@@ -36,7 +36,7 @@
 #include "../connector_Forwarder_Metis.c"
 
 #include <parc/algol/parc_SafeMemory.h>
-#include <parc/security/parc_PublicKeySignerPkcs12Store.h>
+#include <parc/security/parc_Pkcs12KeyStore.h>
 #include <parc/security/parc_Security.h>
 
 #include <ccnx/api/control/cpi_ControlFacade.h>
@@ -195,7 +195,7 @@ _createParams(int port, const char *keystore_name, const char *keystore_passwd)
                 tlvCodec_ConnectionConfig(
                     ccnxConnectionConfig_Create()), port)));
 
-    publicKeySignerPkcs12Store_ConnectionConfig(connConfig, keystore_name, keystore_passwd);
+    publicKeySigner_ConnectionConfig(connConfig, keystore_name, keystore_passwd);
 
     CCNxTransportConfig *result = ccnxTransportConfig_Create(stackConfig, connConfig);
     ccnxStackConfig_Release(&stackConfig);
@@ -454,7 +454,7 @@ LONGBOW_TEST_RUNNER_SETUP(connector_Forwarder_Metis)
 
     // init + fini here so there's no memory imbalance
     parcSecurity_Init();
-    parcPublicKeySignerPkcs12Store_CreateFile(keystorename, keystorepass, "ccnxuser", 1024, 365);
+    parcPkcs12KeyStore_CreateFile(keystorename, keystorepass, "ccnxuser", 1024, 365);
     parcSecurity_Fini();
 
     return LONGBOW_STATUS_SUCCEEDED;

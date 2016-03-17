@@ -39,18 +39,9 @@
 #include <ccnx/common/ccnx_NameSegmentNumber.h>
 #include <ccnx/transport/transport_rta/core/rta_Component.h>
 
-#include <parc/security/parc_PublicKeySignerPkcs12Store.h>
-#include <parc/security/parc_Signer.h>
-
-#include <ccnx/common/codec/schema_v1/ccnxCodecSchemaV1_TlvDictionary.h>
 #include <ccnx/common/codec/schema_v1/testdata/v1_interest_nameA.h>
 
-#include <ccnx/common/ccnx_WireFormatMessage.h>
-
 #include <ccnx/common/internal/ccnx_InterestDefault.h>
-
-#include <ccnx/common/ccnx_ContentObject.h>
-#include <ccnx/common/ccnx_Interest.h>
 
 #include <ccnx/api/control/cpi_ControlFacade.h>
 
