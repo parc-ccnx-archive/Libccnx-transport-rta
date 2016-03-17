@@ -40,7 +40,6 @@
 #include <inttypes.h>
 
 #include <LongBow/runtime.h>
-#include <LongBow/debugging.h>
 
 #include <parc/algol/parc_Memory.h>
 
@@ -51,21 +50,13 @@
 #include <ccnx/transport/transport_rta/core/rta_Connection.h>
 #include <ccnx/transport/transport_rta/core/rta_Component.h>
 
-#include <parc/security/parc_PublicKeySignerPkcs12Store.h>
-#include <parc/security/parc_SymmetricSignerFileStore.h>
-#include <parc/security/parc_CryptoHashType.h>
-
 #include <ccnx/common/codec/ccnxCodec_TlvPacket.h>
 #include <ccnx/common/codec/schema_v1/ccnxCodecSchemaV1_TlvDictionary.h>
 
 #include <ccnx/common/codec/schema_v1/ccnxCodecSchemaV1_PacketEncoder.h>
 
-#include <ccnx/common/ccnx_WireFormatMessage.h>
-
 #include "component_Codec.h"
 #include "codec_Signing.h"
-#include <ccnx/transport/transport_rta/config/config_Signer.h>
-#include <ccnx/transport/transport_rta/config/config_Codec_Tlv.h>
 
 // set to 3 or higher for memory dumps of packets
 #ifndef DEBUG_OUTPUT

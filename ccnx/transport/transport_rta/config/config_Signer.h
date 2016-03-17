@@ -37,13 +37,13 @@
 #define Libccnx_config_Signer_h
 
 #include <ccnx/transport/common/ccnx_TransportConfig.h>
-#include "config_SymmetricKeySignerFileStore.h"
-#include "config_PublicKeySignerPkcs12Store.h"
+#include "config_SymmetricKeySigner.h"
+#include "config_PublicKeySigner.h"
 
 typedef enum {
-    SIGNER_Unknown,
-    SIGNER_PublicKeySignerPkcs12Store,
-    SIGNER_SymmetricKeySignerFileStore
+    SignerType_Unknown,
+    SignerType_PublicKeySigner,
+    SignerType_SymmetricKeySigner
 } SignerType;
 
 /**

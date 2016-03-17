@@ -38,6 +38,7 @@
 #include <parc/algol/parc_SafeMemory.h>
 #include <ccnx/api/control/cpi_ControlFacade.h>
 
+#include <parc/security/parc_Pkcs12KeyStore.h>
 #include <parc/security/parc_Security.h>
 #include <ccnx/transport/transport_rta/config/config_All.h>
 
@@ -77,10 +78,10 @@ codecTlv_CreateParams(const char *keystore_filename, const char *keystore_passwo
 
     unlink(keystore_filename);
 
-    bool success = parcPublicKeySignerPkcs12Store_CreateFile(keystore_filename, keystore_password, "alice", 1024, 30);
-    assertTrue(success, "parcPublicKeySignerPkcs12Store_CreateFile() failed.");
+    bool success = parcPkcs12KeyStore_CreateFile(keystore_filename, keystore_password, "alice", 1024, 30);
+    assertTrue(success, "parcPkcs12KeyStore_CreateFile() failed.");
 
-    publicKeySignerPkcs12Store_ConnectionConfig(connConfig, keystore_filename, keystore_password);
+    publicKeySigner_ConnectionConfig(connConfig, keystore_filename, keystore_password);
 
     CCNxTransportConfig *result = ccnxTransportConfig_Create(stackConfig, connConfig);
     ccnxStackConfig_Release(&stackConfig);
@@ -290,7 +291,7 @@ LONGBOW_TEST_CASE(Dictionary, component_Codec_Tlv_Upcall_Read_Control)
                                              0, sizeof(v1_cpi_add_route_crc32c));
     CCNxTlvDictionary *dictionary = ccnxWireFormatMessage_FromControlPacketType(CCNxTlvDictionary_SchemaVersion_V1, wireFormat);
     parcBuffer_Release(&wireFormat);
-    
+
     // We have not set the message type or schema
     TransportMessage *tm = transportMessage_CreateFromDictionary(dictionary);
     transportMessage_SetInfo(tm, data->mock->connection, NULL);

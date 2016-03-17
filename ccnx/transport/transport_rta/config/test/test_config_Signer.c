@@ -81,12 +81,12 @@ LONGBOW_TEST_CASE(Global, signer_GetImplementationType_PublicKey)
     CCNxConnectionConfig *connConfig = ccnxConnectionConfig_Create();
     const char *filename = "filename";
     const char *password = "password";
-    publicKeySignerPkcs12Store_ConnectionConfig(connConfig, filename, password);
+    publicKeySigner_ConnectionConfig(connConfig, filename, password);
 
     PARCJSON *json = ccnxConnectionConfig_GetJson(connConfig);
 
     SignerType type = signer_GetImplementationType(json);
-    assertTrue(type == SIGNER_PublicKeySignerPkcs12Store, "Got wrong signer type, got %d expected %d", type, SIGNER_PublicKeySignerPkcs12Store);
+    assertTrue(type == SignerType_PublicKeySigner, "Got wrong signer type, got %d expected %d", type, SignerType_PublicKeySigner);
 
     ccnxConnectionConfig_Destroy(&connConfig);
 }
@@ -96,12 +96,12 @@ LONGBOW_TEST_CASE(Global, signer_GetImplementationType_SymmetricKey)
     CCNxConnectionConfig *connConfig = ccnxConnectionConfig_Create();
     const char *filename = "filename";
     const char *password = "password";
-    symmetricKeySignerFileStore_ConnectionConfig(connConfig, filename, password);
+    symmetricKeySigner_ConnectionConfig(connConfig, filename, password);
 
     PARCJSON *json = ccnxConnectionConfig_GetJson(connConfig);
 
     SignerType type = signer_GetImplementationType(json);
-    assertTrue(type == SIGNER_SymmetricKeySignerFileStore, "Got wrong signer type, got %d expected %d", type, SIGNER_SymmetricKeySignerFileStore);
+    assertTrue(type == SignerType_SymmetricKeySigner, "Got wrong signer type, got %d expected %d", type, SignerType_SymmetricKeySigner);
 
     ccnxConnectionConfig_Destroy(&connConfig);
 }
@@ -113,7 +113,7 @@ LONGBOW_TEST_CASE(Global, signer_GetImplementationType_Unknown)
     PARCJSON *json = parcJSON_ParseString(bogusSignerString);
 
     SignerType type = signer_GetImplementationType(json);
-    assertTrue(type == SIGNER_Unknown, "Got wrong signer type, got %d expected %d", type, SIGNER_Unknown);
+    assertTrue(type == SignerType_Unknown, "Got wrong signer type, got %d expected %d", type, SignerType_Unknown);
 
     parcJSON_Release(&json);
 }

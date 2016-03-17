@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014, Xerox Corporation (Xerox)and Palo Alto Research Center (PARC)
+ * Copyright (c) 2013-2015, Xerox Corporation (Xerox)and Palo Alto Research Center (PARC)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,17 +25,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /**
- * @file config_SymmetricKeySignerFileStore.h
+ * @file config_PublicKeySigner.h
  * @brief Generates stack and connection configuration information
  *
  * Each component in the protocol stack must have a configuration element.
- * This module generates the configuration elements for the Symmetric Keystore.
- * The keystore is specific to a Connection, so there is no Protocol Stack configuration.
+ * This module generates the configuration elements for the PKCS12 Signer.
+ *
+ * The signer only as a Connection configuration.
  *
  * @code
  * {
- *      // Configure a stack with {APIConnector,TLVCodec,MetisConnector}
- *      // The coded will use a symmetric keystore
+ *      // Configure a stack with {APIConnector,TLVCodec,PKCS12Signer,MetisConnector}
  *
  *      stackConfig = ccnxStackConfig_Create();
  *      connConfig = ccnxConnectionConfig_Create();
@@ -44,25 +44,27 @@
  *      apiConnector_ConnectionConfig(connConfig);
  *      tlvCodec_ProtocolStackConfig(stackConfig);
  *      tlvCodec_ConnectionConfig(connConfig);
- *      symmetricKeySignerFileStore_ConnectionConfig(connConfig, "~/.ccnx/keystore.p12", "foobar password");
+ *
+ *      publicKeySigner_ConnectionConfig(connConfig, "~/.ccnx/keystore.p12", "foobar password");
  *
  *      metisForwarder_ProtocolStackConfig(stackConfig);
- *      metisForwarder_ConnectionConfig(connConfig, metis_port);
+ *      metisForwarder_ConnectionConfig(connConfig, metisForwarder_GetDefaultPort());
  *
  *      CCNxTransportConfig *config = ccnxTransportConfig_Create(stackConfig, connConfig);
  * }
  *
  * @author Marc Mosko, Palo Alto Research Center (Xerox PARC)
- * @copyright 2013-2014, Xerox Corporation (Xerox)and Palo Alto Research Center (PARC).  All rights reserved.
+ * @copyright 2013-2015, Xerox Corporation (Xerox)and Palo Alto Research Center (PARC).  All rights reserved.
  */
-
-#ifndef Libccnx_config_SymmetricKeySignerFileStore_h
-#define Libccnx_config_SymmetricKeySignerFileStore_h
-
-#include <ccnx/transport/common/ccnx_TransportConfig.h>
+#ifndef Libccnx_config_PublicKeySigner_h
+#define Libccnx_config_PublicKeySigner_h
 #include <stdbool.h>
 
-struct symmetrickeysigner_params {
+#include <parc/security/parc_Identity.h>
+
+#include <ccnx/transport/common/ccnx_TransportConfig.h>
+
+struct publickeysigner_params {
     const char *filename;
     const char *password;
 };
@@ -72,8 +74,8 @@ struct symmetrickeysigner_params {
  *
  * Adds configuration elements to the `CCNxConnectionConfig`
  *
- * { "SIGNER" : "SymmetricFileStore",
- *   "SymmetricFileStore" : { "filename" : filename, password : password }
+ * { "SIGNER" : "publicKeySigner",
+ *   "publicKeySigner" : { "filename" : filename, "password" : password }
  * }
  *
  * @param [in] config A pointer to a valid CCNxConnectionConfig instance.
@@ -85,7 +87,23 @@ struct symmetrickeysigner_params {
  * <#example#>
  * @endcode
  */
-CCNxConnectionConfig *symmetricKeySignerFileStore_ConnectionConfig(CCNxConnectionConfig *config, const char *filename, const char *password);
+CCNxConnectionConfig *publicKeySigner_ConnectionConfig(CCNxConnectionConfig *config, const char *filename, const char *password);
+
+/**
+ * Generates the configuration settings included in the CCNxConnectionConfig for the identity of the configuration 'owner'
+ *
+ * Adds configuration elements to the `CCNxConnectionConfig`
+ *
+ * { "SIGNER" : "publicKeySigner",
+ *   "publicKeySigner" : { "filename" : filename, "password" : password }
+ * }
+ *
+ * @param [in] connConfig The pointer to a valid CCNxConnectionConfig instance.
+ * @param [in] identity A pointer to a valid PARCIdentity instance.
+ *
+ * @return non-null The modified `CCNxConnectionConfig`
+ */
+CCNxConnectionConfig *configPublicKeySigner_SetIdentity(CCNxConnectionConfig *connConfig, const PARCIdentity *identity);
 
 /**
  * Returns the text string for this component
@@ -95,22 +113,13 @@ CCNxConnectionConfig *symmetricKeySignerFileStore_ConnectionConfig(CCNxConnectio
  * @return non-null A text string unique to this component
  *
  */
-const char *symmetricKeySignerFileStore_GetName(void);
+const char *publicKeySigner_GetName(void);
 
 /**
- * Look inside a JSON configuration and extract the Signer parameters
+ * If successful, return true and fill in the parameters in the output argument
  *
- * <#Paragraphs Of Explanation#>
- *
- * @param [out] output The filename and password passed down the stack
- *
- * @return true Configuration item found and output set
- * @return false Configuration item not found, output not set
- *
- * Example:
- * @code
- * <#example#>
- * @endcode
+ * Parses the JSON created by publicKeySigner_ConnectionConfig() and fills in the
+ * output parameter.  The output parameter must be allocated by the caller.
  */
-bool symmetricKeySignerFileStore_GetConnectionParams(PARCJSON *connectionJson, struct symmetrickeysigner_params *output);
-#endif // Libccnx_config_SymmetricKeySignerFileStore_h
+bool publicKeySigner_GetConnectionParams(PARCJSON *connectionJson, struct publickeysigner_params *output);
+#endif // Libccnx_config_PublicKeySigner_h

@@ -35,7 +35,7 @@
 
 #include <parc/algol/parc_SafeMemory.h>
 #include <parc/security/parc_Security.h>
-#include <parc/security/parc_PublicKeySignerPkcs12Store.h>
+#include <parc/security/parc_Pkcs12KeyStore.h>
 
 #include <ccnx/api/control/cpi_ControlMessage.h>
 #include <ccnx/api/control/controlPlaneInterface.h>
@@ -84,7 +84,7 @@ _createParams(const char *local_name, const char *keystore_name, const char *key
                 localForwarder_ConnectionConfig(
                     ccnxConnectionConfig_Create(), local_name))));
 
-    publicKeySignerPkcs12Store_ConnectionConfig(connConfig, keystore_name, keystore_passwd);
+    publicKeySigner_ConnectionConfig(connConfig, keystore_name, keystore_passwd);
 
     CCNxTransportConfig *result = ccnxTransportConfig_Create(stackConfig, connConfig);
     ccnxStackConfig_Release(&stackConfig);
@@ -107,8 +107,8 @@ _commonSetup(void)
 
     unlink(data->keystoreName);
 
-    bool success = parcPublicKeySignerPkcs12Store_CreateFile(data->keystoreName, data->keystorePassword, "user", 1024, 30);
-    assertTrue(success, "parcPublicKeySignerPkcs12Store_CreateFile() failed.");
+    bool success = parcPkcs12KeyStore_CreateFile(data->keystoreName, data->keystorePassword, "user", 1024, 30);
+    assertTrue(success, "parcPkcs12KeyStore_CreateFile() failed.");
 
     data->commandRingBuffer = parcRingBuffer1x1_Create(128, NULL);
     data->commandNotifier = parcNotifier_Create();

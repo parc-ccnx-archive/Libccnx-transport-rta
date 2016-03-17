@@ -36,8 +36,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "config_Signer.h"
-#include "config_PublicKeySignerPkcs12Store.h"
-#include "config_SymmetricKeySignerFileStore.h"
+#include "config_PublicKeySigner.h"
+#include "config_SymmetricKeySigner.h"
 
 #include <ccnx/transport/transport_rta/core/components.h>
 
@@ -66,13 +66,13 @@ signer_GetImplementationType(PARCJSON *connectionJson)
 
     assertNotNull(signer_name, "Name of signer must be non-null in connection configuration");
 
-    if (strcasecmp(signer_name, publicKeySignerPkcs12Store_GetName()) == 0) {
-        return SIGNER_PublicKeySignerPkcs12Store;
+    if (strcasecmp(signer_name, publicKeySigner_GetName()) == 0) {
+        return SignerType_PublicKeySigner;
     }
 
-    if (strcasecmp(signer_name, symmetricKeySignerFileStore_GetName()) == 0) {
-        return SIGNER_SymmetricKeySignerFileStore;
+    if (strcasecmp(signer_name, symmetricKeySigner_GetName()) == 0) {
+        return SignerType_SymmetricKeySigner;
     }
 
-    return SIGNER_Unknown;
+    return SignerType_Unknown;
 }

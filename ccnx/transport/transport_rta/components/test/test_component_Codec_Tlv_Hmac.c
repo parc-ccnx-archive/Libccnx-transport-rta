@@ -42,7 +42,7 @@
 #define DEBUG_OUTPUT 0
 
 #include <parc/security/parc_Security.h>
-#include <parc/security/parc_SymmetricSignerFileStore.h>
+#include <parc/security/parc_SymmetricKeyStore.h>
 
 #include <ccnx/transport/transport_rta/config/config_All.h>
 #include <ccnx/transport/transport_rta/core/rta_Framework.h>
@@ -105,7 +105,7 @@ codecTlv_CreateParams(const char *keystore_name, const char *keystore_passwd)
     tlvCodec_ConnectionConfig(connConfig);
     testingLower_ConnectionConfig(connConfig);
 
-    symmetricKeySignerFileStore_ConnectionConfig(connConfig, keystore_name, keystore_passwd);
+    symmetricKeySigner_ConnectionConfig(connConfig, keystore_name, keystore_passwd);
     CCNxTransportConfig *result = ccnxTransportConfig_Create(stackConfig, connConfig);
     ccnxStackConfig_Release(&stackConfig);
     return result;
@@ -124,8 +124,8 @@ _commonSetup(void)
     sprintf(data->keystore_password, "12345");
 
     unlink(data->keystore_filename);
-    PARCBuffer *secret_key = parcSymmetricSignerFileStore_CreateKey(256);
-    parcSymmetricSignerFileStore_CreateFile(data->keystore_filename, data->keystore_password, secret_key);
+    PARCBuffer *secret_key = parcSymmetricKeyStore_CreateKey(256);
+    parcSymmetricKeyStore_CreateFile(data->keystore_filename, data->keystore_password, secret_key);
     parcBuffer_Release(&secret_key);
 
     CCNxTransportConfig *config = codecTlv_CreateParams(data->keystore_filename, data->keystore_password);

@@ -27,13 +27,13 @@
 
 // Include the file(s) containing the functions to be tested.
 // This permits internal static functions to be visible to this Test Framework.
-#include "../config_SymmetricKeySignerFileStore.c"
+#include "../config_PublicKeySigner.c"
 #include <parc/algol/parc_SafeMemory.h>
 #include <LongBow/unit-test.h>
 #include "testrig_RtaConfigCommon.c"
 #include <ccnx/transport/transport_rta/config/config_Signer.h>
 
-LONGBOW_TEST_RUNNER(config_SymmetricKeySignerFileStore)
+LONGBOW_TEST_RUNNER(config_PublicKeySignerPkcs12Store)
 {
     // The following Test Fixtures will run their corresponding Test Cases.
     // Test Fixtures are run in the order specified, but all tests should be idempotent.
@@ -43,24 +43,22 @@ LONGBOW_TEST_RUNNER(config_SymmetricKeySignerFileStore)
 }
 
 // The Test Runner calls this function once before any Test Fixtures are run.
-LONGBOW_TEST_RUNNER_SETUP(config_SymmetricKeySignerFileStore)
+LONGBOW_TEST_RUNNER_SETUP(config_PublicKeySignerPkcs12Store)
 {
-    parcMemory_SetInterface(&PARCSafeMemoryAsPARCMemory);
-
     return LONGBOW_STATUS_SUCCEEDED;
 }
 
 // The Test Runner calls this function once after all the Test Fixtures are run.
-LONGBOW_TEST_RUNNER_TEARDOWN(config_SymmetricKeySignerFileStore)
+LONGBOW_TEST_RUNNER_TEARDOWN(config_PublicKeySignerPkcs12Store)
 {
     return LONGBOW_STATUS_SUCCEEDED;
 }
 
 LONGBOW_TEST_FIXTURE(Global)
 {
-    LONGBOW_RUN_TEST_CASE(Global, symmetricKeySignerFileStore_ConnectionConfig);
-    LONGBOW_RUN_TEST_CASE(Global, symmetricKeySignerFileStore_GetConnectionParams);
-    LONGBOW_RUN_TEST_CASE(Global, symmetricKeySignerFileStore_GetName);
+    LONGBOW_RUN_TEST_CASE(Global, publicKeySignerPkcs12Store_ConnectionConfig);
+    LONGBOW_RUN_TEST_CASE(Global, publicKeySignerPkcs12Store_GetConnectionParams);
+    LONGBOW_RUN_TEST_CASE(Global, publicKeySignerPkcs12Store_GetName);
 }
 
 LONGBOW_TEST_FIXTURE_SETUP(Global)
@@ -78,15 +76,15 @@ LONGBOW_TEST_FIXTURE_TEARDOWN(Global)
     return LONGBOW_STATUS_SUCCEEDED;
 }
 
-LONGBOW_TEST_CASE(Global, symmetricKeySignerFileStore_ConnectionConfig)
+LONGBOW_TEST_CASE(Global, publicKeySignerPkcs12Store_ConnectionConfig)
 {
     CCNxConnectionConfig *connConfig = ccnxConnectionConfig_Create();
     const char *filename = "filename";
     const char *password = "password";
-    symmetricKeySignerFileStore_ConnectionConfig(connConfig, filename, password);
+    publicKeySigner_ConnectionConfig(connConfig, filename, password);
 
     // make sure our stuff is in there
-    testRtaConfiguration_ConnectionJsonKey(connConfig, symmetricKeySignerFileStore_GetName());
+    testRtaConfiguration_ConnectionJsonKey(connConfig, publicKeySigner_GetName());
 
     // make sure the SIGNER parameter is in there
     testRtaConfiguration_ConnectionJsonKey(connConfig, signer_GetName());
@@ -94,17 +92,17 @@ LONGBOW_TEST_CASE(Global, symmetricKeySignerFileStore_ConnectionConfig)
     ccnxConnectionConfig_Destroy(&connConfig);
 }
 
-LONGBOW_TEST_CASE(Global, symmetricKeySignerFileStore_GetConnectionParams)
+LONGBOW_TEST_CASE(Global, publicKeySignerPkcs12Store_GetConnectionParams)
 {
     CCNxConnectionConfig *connConfig = ccnxConnectionConfig_Create();
     const char *filename = "filename";
     const char *password = "password";
-    symmetricKeySignerFileStore_ConnectionConfig(connConfig, filename, password);
+    publicKeySigner_ConnectionConfig(connConfig, filename, password);
 
     PARCJSON *json = ccnxConnectionConfig_GetJson(connConfig);
-    struct symmetrickeysigner_params params;
+    struct publickeysigner_params params;
 
-    symmetricKeySignerFileStore_GetConnectionParams(json, &params);
+    publicKeySigner_GetConnectionParams(json, &params);
 
     assertTrue(strncmp(params.filename, filename, strlen(filename)) == 0, "wrong filename, got %s expected %s", params.filename, filename);
     assertTrue(strncmp(params.password, password, strlen(password)) == 0, "wrong password, got %s expected %s", params.password, password);
@@ -112,9 +110,9 @@ LONGBOW_TEST_CASE(Global, symmetricKeySignerFileStore_GetConnectionParams)
     ccnxConnectionConfig_Destroy(&connConfig);
 }
 
-LONGBOW_TEST_CASE(Global, symmetricKeySignerFileStore_GetName)
+LONGBOW_TEST_CASE(Global, publicKeySignerPkcs12Store_GetName)
 {
-    testRtaConfiguration_ComponentName(&symmetricKeySignerFileStore_GetName, name);
+    testRtaConfiguration_ComponentName(&publicKeySigner_GetName, name);
 }
 
 LONGBOW_TEST_FIXTURE(Local)
@@ -139,7 +137,7 @@ LONGBOW_TEST_FIXTURE_TEARDOWN(Local)
 int
 main(int argc, char *argv[])
 {
-    LongBowRunner *testRunner = LONGBOW_TEST_RUNNER_CREATE(config_SymmetricKeySignerFileStore);
+    LongBowRunner *testRunner = LONGBOW_TEST_RUNNER_CREATE(config_PublicKeySignerPkcs12Store);
     int exitStatus = longBowMain(argc, argv, testRunner, NULL);
     longBowTestRunner_Destroy(&testRunner);
     exit(exitStatus);
