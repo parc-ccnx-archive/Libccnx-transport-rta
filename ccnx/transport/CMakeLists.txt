@@ -137,9 +137,9 @@ set(RTA_CONFIG_SRCS
 	transport_rta/config/config_TestingComponent.c
 	transport_rta/config/config_InMemoryVerifier.c
 	transport_rta/config/config_ProtocolStack.c
-	transport_rta/config/config_PublicKeySignerPkcs12Store.c
+	transport_rta/config/config_PublicKeySigner.c
 	transport_rta/config/config_Signer.c
-	transport_rta/config/config_SymmetricKeySignerFileStore.c
+	transport_rta/config/config_SymmetricKeySigner.c
 	)
 
 source_group(rta_config FILES ${RTA_CONFIG_SRCS})
