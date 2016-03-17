@@ -91,7 +91,7 @@ typedef enum {
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
  *     NotifyStatus *expected = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  * }
  * @endcode
@@ -113,7 +113,7 @@ NotifyStatus *notifyStatus_Create(int apiFd, NotifyStatusCode code, CCNxName *na
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
  *     NotifyStatus *status = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  *
  *     NotifyStatus *x_2 = notifyStatus_Acquire(status);
@@ -141,7 +141,7 @@ NotifyStatus *notifyStatus_Acquire(const NotifyStatus *status);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
  *     NotifyStatus *status = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  *
  *     notifyStatus_Release(&status);
@@ -162,7 +162,7 @@ void notifyStatus_Release(NotifyStatus **statusPtr);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
  *     NotifyStatus *status1 = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  *     NotifyStatus *status2 = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  *
@@ -183,7 +183,7 @@ bool notifyStatus_Equals(const NotifyStatus *x, const NotifyStatus *y);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
  *     NotifyStatus *status = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  *
  *     notifyStatus_Display(status, 0);
@@ -204,7 +204,7 @@ void notifyStatus_Display(const NotifyStatus *status, int indentation);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
  *     NotifyStatus *status = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  *
  *     int fd = notifyStatus_GetFiledes(status);
@@ -223,7 +223,7 @@ int notifyStatus_GetFiledes(const NotifyStatus *status);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
  *     NotifyStatus *status = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  *
  *     NotifyStatusCode code = notifyStatus_GetStatusCode(status);
@@ -242,7 +242,7 @@ NotifyStatusCode notifyStatus_GetStatusCode(const NotifyStatus *status);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
  *     NotifyStatus *status = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  *
  *     NotifyStatusCode code = notifyStatus_GetStatusCode(status);
@@ -261,7 +261,7 @@ CCNxName *notifyStatus_GetName(const NotifyStatus *status);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
  *     NotifyStatus *status = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  *
  *     NotifyStatusCode code = notifyStatus_GetStatusCode(status);
@@ -281,7 +281,7 @@ char *notifyStatus_GetMessage(const NotifyStatus *status);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
  *     NotifyStatus *status = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  *
  *     PARCJSON *json = notifyStatus_ToJSON(status);
@@ -301,7 +301,7 @@ PARCJSON *notifyStatus_ToJSON(const NotifyStatus *status);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
  *     NotifyStatus *status = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  *
  *     PARCJSON *json = notifyStatus_ToJSON(status);
@@ -323,7 +323,7 @@ NotifyStatus *notifyStatus_ParseJSON(const PARCJSON *json);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
  *     NotifyStatus *status = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  *
  *     if (notifyStatus_IsConnectionOpen(status)) {
@@ -345,7 +345,7 @@ bool notifyStatus_IsConnectionOpen(const NotifyStatus *status);
  * Example:
  * @code
  * {
- *     CCNxName *name = ccnxName_CreateFromURI("lci:/a/b/c");
+ *     CCNxName *name = ccnxName_CreateFromCString("lci:/a/b/c");
  *     NotifyStatus *status = notifyStatus_Create(1, notifyStatus_CONNECTION_OPEN, name, "Good to go");
  *
  *     if (notifyStatus_IsFlowControlStarted(status)) {

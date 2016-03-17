@@ -185,7 +185,7 @@ LONGBOW_TEST_FIXTURE_TEARDOWN(Local)
 static CCNxTlvDictionary *
 createSignedContentObject(void)
 {
-    CCNxName *name = ccnxName_CreateFromURI("lci:/some/name");
+    CCNxName *name = ccnxName_CreateFromCString("lci:/some/name");
     PARCBuffer *payload = parcBuffer_Flip(parcBuffer_PutArray(parcBuffer_Allocate(20), 11, (uint8_t *) "the payload"));
     CCNxTlvDictionary *contentObject = ccnxContentObject_CreateWithDataPayload(name, payload);
     parcBuffer_Release(&payload);
@@ -283,7 +283,7 @@ LONGBOW_TEST_CASE(Local, vegasSession_GetSegnumFromObject)
     };
 
     for (int i = 0; test_vectors[i].uri != NULL; i++) {
-        CCNxName *name = ccnxName_CreateFromURI(test_vectors[i].uri);
+        CCNxName *name = ccnxName_CreateFromCString(test_vectors[i].uri);
         CCNxTlvDictionary *contentObject = ccnxContentObject_CreateWithDataPayload(name, NULL);
 
         uint64_t testSeqnum = -1;
@@ -721,4 +721,3 @@ main(int argc, char *argv[])
     LongBowRunner *testRunner = LONGBOW_TEST_RUNNER_CREATE(Fc_Vegas);
     exit(longBowMain(argc, argv, testRunner, NULL));
 }
-

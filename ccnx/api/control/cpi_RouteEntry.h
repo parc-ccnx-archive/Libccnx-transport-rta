@@ -87,7 +87,7 @@ typedef struct cpi_route_entry CPIRouteEntry;
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     unsigned ifidx = 55;
  *     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
  *     struct timeval lifetime = { 3600, 0 };
@@ -119,7 +119,7 @@ CPIRouteEntry *cpiRouteEntry_Create(CCNxName *prefix, unsigned interfaceIndex, c
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
  *     struct timeval lifetime = { 3600, 0 };
  *     unsigned cost = 200;
@@ -145,7 +145,7 @@ CPIRouteEntry *cpiRouteEntry_CreateSymbolic(CCNxName *prefix, const char *symbol
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_FromURI("lci:/a/b");
+ *     CCNxName *prefix = ccnxName_FromCString("lci:/a/b");
  *     CPIRouteEntry *route = cpiRouteEntry_CreateRouteToSelf(prefix);
  *     ccnxName_Release(&prefix);
  * }
@@ -163,7 +163,7 @@ CPIRouteEntry *cpiRouteEntry_CreateRouteToSelf(const CCNxName *name);
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_FromURI("lci:/a/b");
+ *     CCNxName *prefix = ccnxName_FromCString("lci:/a/b");
  *     CPIRouteEntry *route = cpiRouteEntry_CreateRouteToSelf(prefix);
  *     ccnxName_Release(&prefix);
  *
@@ -186,7 +186,7 @@ void cpiRouteEntry_Destroy(CPIRouteEntry **routeEntryPtr);
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_FromURI("lci:/a/b");
+ *     CCNxName *prefix = ccnxName_FromCString("lci:/a/b");
  *     CPIRouteEntry *route = cpiRouteEntry_CreateRouteToSelf(prefix);
  *     ccnxName_Release(&prefix);
  *
@@ -231,11 +231,11 @@ CPIRouteEntry *cpiRouteEntry_Copy(const CPIRouteEntry *routeEntry);
  *     CPIRouteEntry *bufferA = parcBuffer_Allocate(10);
  *     CPIRouteEntry *bufferB = parcBuffer_Allocate(10);
  *
- *     CCNxName *prefixA = ccnxName_FromURI("lci:/a/b");
+ *     CCNxName *prefixA = ccnxName_FromCString("lci:/a/b");
  *     CPIRouteEntry *routeA = cpiRouteEntry_CreateRouteToSelf(prefixA);
  *     ccnxName_Release(&prefixA);
  *
- *     CCNxName *prefixB = ccnxName_FromURI("lci:/a/b");
+ *     CCNxName *prefixB = ccnxName_FromCString("lci:/a/b");
  *     CPIRouteEntry *routeB = cpiRouteEntry_CreateRouteToSelf(prefixB);
  *     ccnxName_Release(&prefixB);
  *
@@ -260,7 +260,7 @@ bool cpiRouteEntry_Equals(const CPIRouteEntry *a, const CPIRouteEntry *b);
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     unsigned ifidx = -1; // unknown
  *     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
  *     struct timeval *lifetimePtr = NULL;
@@ -285,7 +285,7 @@ void cpiRouteEntry_SetInterfaceIndex(CPIRouteEntry *route, unsigned interfaceInd
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     unsigned ifidx = -1; // unknown
  *     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
  *     struct timeval *lifetimePtr = NULL;
@@ -310,7 +310,7 @@ const CCNxName *cpiRouteEntry_GetPrefix(const CPIRouteEntry *route);
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     unsigned ifidx = 55;
  *     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
  *     struct timeval *lifetimePtr = NULL;
@@ -338,7 +338,7 @@ unsigned cpiRouteEntry_GetInterfaceIndex(const CPIRouteEntry *route);
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     unsigned ifidx = 55;
  *     CPIAddress *nexthop = NULL;
  *     struct timeval lifetime = { 3600, 0 };
@@ -365,7 +365,7 @@ const CPIAddress *cpiRouteEntry_GetNexthop(const CPIRouteEntry *route);
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     unsigned ifidx = 55;
  *     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
  *     struct timeval *lifetimePtr = NULL;
@@ -393,7 +393,7 @@ bool cpiRouteEntry_HasLifetime(const CPIRouteEntry *route);
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     unsigned ifidx = 55;
  *     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
  *     struct timeval lifetime = { 3600, 0 };
@@ -420,7 +420,7 @@ struct timeval cpiRouteEntry_GetLifetime(const CPIRouteEntry *route);
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     unsigned ifidx = 55;
  *     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
  *     struct timeval lifetime = { 3600, 0 };
@@ -447,7 +447,7 @@ CPINameRouteProtocolType cpiRouteEntry_GetRouteProtocolType(const CPIRouteEntry 
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     unsigned ifidx = 55;
  *     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
  *     struct timeval lifetime = { 3600, 0 };
@@ -474,7 +474,7 @@ CPINameRouteType cpiRouteEntry_GetRouteType(const CPIRouteEntry *route);
  * Example:
  * @code
  * {
- *     CCNxName * prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName * prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     unsigned ifidx = 55;
  *     CPIAddress * nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
  *     struct timeval lifetime = { 3600, 0 };
@@ -500,7 +500,7 @@ unsigned cpiRouteEntry_GetCost(const CPIRouteEntry *route);
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     unsigned ifidx = 55;
  *     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
  *     struct timeval lifetime = { 3600, 0 };
@@ -529,7 +529,7 @@ PARCJSON *cpiRouteEntry_ToJson(const CPIRouteEntry *route);
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     unsigned ifidx = 55;
  *     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
  *     struct timeval lifetime = { 3600, 0 };
@@ -564,7 +564,7 @@ CPIRouteEntry *cpiRouteEntry_FromJson(PARCJSON *json);
  * Example:
  * @code
  * {
- *     CCNxName *prefix = ccnxName_CreateFromURI("lci:/howdie/stranger");
+ *     CCNxName *prefix = ccnxName_CreateFromCString("lci:/howdie/stranger");
  *     unsigned ifidx = 55;
  *     CPIAddress *nexthop = cpiAddress_CreateFromInet(&(struct sockaddr_in) { .sin_addr.s_addr = 0x01020304 });
  *     struct timeval lifetime = { 3600, 0 };
