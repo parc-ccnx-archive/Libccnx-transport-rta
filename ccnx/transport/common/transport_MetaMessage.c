@@ -35,6 +35,7 @@
 #include <ccnx/transport/common/transport_MetaMessage.h>
 #include <ccnx/common/codec/ccnxCodec_TlvPacket.h>
 #include <ccnx/common/ccnx_WireFormatMessage.h>
+#include <ccnx/common/ccnx_Manifest.h>
 
 CCNxMetaMessage *
 ccnxMetaMessage_CreateFromInterest(const CCNxInterest *interest)
@@ -53,6 +54,13 @@ ccnxMetaMessage_CreateFromControl(const CCNxControl *control)
 {
     return ccnxMetaMessage_Acquire((CCNxMetaMessage *) control);
 }
+
+CCNxMetaMessage *
+ccnxMetaMessage_CreateFromManifest(const CCNxManifest *manifest)
+{
+    return ccnxMetaMessage_Acquire((CCNxMetaMessage *) manifest);
+}
+
 
 CCNxContentObject *
 ccnxMetaMessage_GetContentObject(const CCNxMetaMessage *message)
@@ -76,6 +84,12 @@ CCNxControl *
 ccnxMetaMessage_GetControl(const CCNxMetaMessage *message)
 {
     return (CCNxControl *) message;
+}
+
+CCNxManifest *
+ccnxMetaMessage_GetManifest(const CCNxMetaMessage *message)
+{
+    return (CCNxManifest *) message;
 }
 
 CCNxMetaMessage *
@@ -118,6 +132,12 @@ bool
 ccnxMetaMessage_IsControl(const CCNxMetaMessage *message)
 {
     return ccnxTlvDictionary_IsControl(message);
+}
+
+bool
+ccnxMetaMessage_IsManifest(const CCNxMetaMessage *message)
+{
+    return ccnxTlvDictionary_IsManifest(message);
 }
 
 /**
