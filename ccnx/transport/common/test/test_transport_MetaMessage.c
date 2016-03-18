@@ -117,7 +117,7 @@ LONGBOW_TEST_CASE(Global, ccnxMetaMessage_CreateFromContentObject)
 {
     CCNxName *name = ccnxName_CreateFromCString("lci:/foo/bar");
     PARCBuffer *payload = parcBuffer_WrapCString("This is some data. It's not good data, but it is data.");
-    CCNxContentObject *contentObject = ccnxContentObject_CreateWithDataPayload(name, payload);
+    CCNxContentObject *contentObject = ccnxContentObject_CreateWithNameAndPayload(name, payload);
 
     CCNxMetaMessage *portalMessage = ccnxMetaMessage_CreateFromContentObject(contentObject);
     assertNotNull(portalMessage, "Expected a non-null portal message");
@@ -159,7 +159,7 @@ LONGBOW_TEST_CASE(Global, ccnxMetaMessage_GetContentObject)
 {
     CCNxName *name = ccnxName_CreateFromCString("lci:/foo/bar");
     PARCBuffer *payload = parcBuffer_WrapCString("This is some data. It's not good data, but it is data.");
-    CCNxContentObject *contentObject = ccnxContentObject_CreateWithDataPayload(name, payload);
+    CCNxContentObject *contentObject = ccnxContentObject_CreateWithNameAndPayload(name, payload);
 
     CCNxMetaMessage *portalMessage = ccnxMetaMessage_CreateFromContentObject(contentObject);
 
@@ -204,7 +204,7 @@ LONGBOW_TEST_CASE(Global, ccnxMetaMessage_IsContentObject)
 {
     CCNxName *name = ccnxName_CreateFromCString("lci:/foo/bar");
     PARCBuffer *payload = parcBuffer_WrapCString("This is some data. It's not good data, but it is data.");
-    CCNxContentObject *contentObject = ccnxContentObject_CreateWithDataPayload(name, payload);
+    CCNxContentObject *contentObject = ccnxContentObject_CreateWithNameAndPayload(name, payload);
 
     CCNxMetaMessage *portalMessage = ccnxMetaMessage_CreateFromContentObject(contentObject);
 
