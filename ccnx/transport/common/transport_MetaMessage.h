@@ -40,6 +40,7 @@
 #include <ccnx/common/ccnx_Interest.h>
 #include <ccnx/common/ccnx_InterestReturn.h>
 #include <ccnx/common/ccnx_ContentObject.h>
+#include <ccnx/common/ccnx_Manifest.h>
 #include <ccnx/common/ccnx_WireFormatMessage.h>
 
 #include <ccnx/common/internal/ccnx_TlvDictionary.h>
@@ -109,6 +110,25 @@ CCNxMetaMessage *ccnxMetaMessage_CreateFromContentObject(const CCNxContentObject
  * @endcode
  */
 CCNxMetaMessage *ccnxMetaMessage_CreateFromControl(const CCNxControl *control);
+
+/**
+ * Create a `CCNxMetaMessage` instance containing the given {@link CCNxManifest}.
+ *
+ * A new reference to the `CCNxManifest` is created.
+ *
+ * @param [in] control A pointer to a valid `CCNxManifest` instance.
+ *
+ * @return NULL The `CCNxManifest` is not valid, or memory could not be allocated.
+ * @return non-NULL A pointer to a `CCNxMetaMessage` instance.
+ *
+ * Example:
+ * @code
+ * {
+ *         CCNxMetaMessage *message = ccnxMetaMessage_CreateFromManifest(manifest);
+ * }
+ * @endcode
+ */
+CCNxMetaMessage *ccnxMetaMessage_CreateFromManifest(const CCNxManifest *manifest);
 
 /**
  * Print a human readable representation of the given `CCNxMetaMessage` instance.
@@ -268,6 +288,34 @@ bool ccnxMetaMessage_IsContentObject(const CCNxMetaMessage *message);
 bool ccnxMetaMessage_IsControl(const CCNxMetaMessage *message);
 
 /**
+ * Determine whether a specified `CCNxMetaMessage` instance encapsulates a {@link CCNxManifest}.
+ *
+ * Returns true if the underlying message is a `CCNxManifest`.
+ *
+ * @param [in] message A pointer to a `CCNxMetaMessage` instance.
+ *
+ * @return `true` If the underlying message is a `CCNxManifest`.
+ * @return `false` If the underlying message is not a `CCNxManifest`.
+ *
+ * Example:
+ * @code
+ * {
+ *     CCNxMetaMessage *message = ccnxPortal_Receive(portal, CCNxStackTimeout_Never);
+ *
+ *     if (ccnxMetaMessage_IsManifest(message)) {
+ *         CCNxManifest *control = ccnxMetaMessage_GetManifest(message);
+ *         ...
+ *         ccnxManifest_Release(&manifest);
+ *     }
+ *
+ *     ccnxMetaMessage_Release(&message);
+ * }
+ * @endcode
+ * @see `CCNxManifest`
+ */
+bool ccnxMetaMessage_IsManifest(const CCNxMetaMessage *message);
+
+/**
  * Release a previously acquired reference to the specified instance,
  * decrementing the reference count for the instance.
  *
@@ -409,6 +457,35 @@ CCNxInterest *ccnxMetaMessage_GetInterestReturn(const CCNxMetaMessage *message);
  * @see {@link ccnxMetaMessage_IsControl}
  */
 CCNxControl *ccnxMetaMessage_GetControl(const CCNxMetaMessage *message);
+
+/**
+ * Return a new {@link CCNxManifest} instance created from the `CCNxMetaMessage`.
+ *
+ * The newly created `CCNxManifest` instance must eventually be released by calling {@link ccnxManifest_Release}().
+ *
+ * @param [in] message A pointer to a `CCNxMetaMessage` instance.
+ *
+ * @return A new `CCNxManifest` instance, which must eventually be released by calling `ccnxManifest_Release()`.
+ *
+ * Example:
+ * @code
+ * {
+ *     CCNxMetaMessage *message = ccnxPortal_Receive(portal, CCNxStackTimeout_Never);
+ *
+ *     if (ccnxMetaMessage_IsManifest(message)) {
+ *         CCNxManifest *manifest = ccnxMetaMessage_GetManifest(message);
+ *         ...
+ *         ccnxManifest_Release(&manifest);
+ *     }
+ *
+ *     ccnxMetaMessage_Release(&message);
+ * }
+ * @endcode
+ *
+ * @see {@link ccnxManifest_Release}
+ * @see {@link ccnxMetaMessage_IsManifest}
+ */
+CCNxManifest *ccnxMetaMessage_GetManifest(const CCNxMetaMessage *message);
 
 /**
  * Return a new {@link CCNxMetaMessage} instance created from a wire format message
