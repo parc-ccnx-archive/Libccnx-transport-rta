@@ -1137,6 +1137,8 @@ _readPacket(FwdMetisState *fwd_state)
     // are we still reading the header?
     if (fwd_state->nextMessage.remainingReadLength > 0) {
         returnCode = _readPacketHeader(fwd_state);
+    } else {
+        returnCode = ReadReturnCode_Finished;
     }
 
     // After reading the header, it may be possible to read the body too
