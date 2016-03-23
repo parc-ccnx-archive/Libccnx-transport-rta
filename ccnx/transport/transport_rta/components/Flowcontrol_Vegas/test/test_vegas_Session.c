@@ -190,9 +190,9 @@ LONGBOW_TEST_FIXTURE_TEARDOWN(Local)
 static CCNxTlvDictionary *
 createSignedContentObject(void)
 {
-    CCNxName *name = ccnxName_CreateFromCString("lci:/some/name");
+    CCNxName *name = ccnxName_CreateFromCString("ccnx:/some/name");
     PARCBuffer *payload = parcBuffer_Flip(parcBuffer_PutArray(parcBuffer_Allocate(20), 11, (uint8_t *) "the payload"));
-    CCNxTlvDictionary *contentObject = ccnxContentObject_CreateWithDataPayload(name, payload);
+    CCNxTlvDictionary *contentObject = ccnxContentObject_CreateWithNameAndPayload(name, payload);
     parcBuffer_Release(&payload);
     ccnxName_Release(&name);
 
@@ -279,22 +279,22 @@ LONGBOW_TEST_CASE(Local, vegasSession_GetSegnumFromObject)
         uint64_t segnum;
         char *uri;
     } test_vectors[] = {
-        { .valid = false, .segnum = 0,                  .uri = "lci:/foo/bar"                              },
-        { .valid = true,  .segnum = 0,                  .uri = "lci:/foo/" CCNxNameLabel_Chunk "=%00"      },
-        { .valid = true,  .segnum = 0x1020,             .uri = "lci:/foo/" CCNxNameLabel_Chunk "=%10%20"   },
-        { .valid = true,  .segnum = 0x6162,             .uri = "lci:/foo/" CCNxNameLabel_Chunk "=ab"       },
-        { .valid = true,  .segnum = 0x616263,           .uri = "lci:/foo/" CCNxNameLabel_Chunk "=abc"      },
-        { .valid = true,  .segnum = 0x61626364,         .uri = "lci:/foo/" CCNxNameLabel_Chunk "=abcd"     },
-        { .valid = true,  .segnum = 0x6162636465,       .uri = "lci:/foo/" CCNxNameLabel_Chunk "=abcde"    },
-        { .valid = true,  .segnum = 0x616263646566,     .uri = "lci:/foo/" CCNxNameLabel_Chunk "=abcdef"   },
-        { .valid = true,  .segnum = 0x61626364656667,   .uri = "lci:/foo/" CCNxNameLabel_Chunk "=abcdefg"  },
-        { .valid = true,  .segnum = 0x6162636465666768, .uri = "lci:/foo/" CCNxNameLabel_Chunk "=abcdefgh" },
+        { .valid = false, .segnum = 0,                  .uri = "ccnx:/foo/bar"                              },
+        { .valid = true,  .segnum = 0,                  .uri = "ccnx:/foo/" CCNxNameLabel_Chunk "=%00"      },
+        { .valid = true,  .segnum = 0x1020,             .uri = "ccnx:/foo/" CCNxNameLabel_Chunk "=%10%20"   },
+        { .valid = true,  .segnum = 0x6162,             .uri = "ccnx:/foo/" CCNxNameLabel_Chunk "=ab"       },
+        { .valid = true,  .segnum = 0x616263,           .uri = "ccnx:/foo/" CCNxNameLabel_Chunk "=abc"      },
+        { .valid = true,  .segnum = 0x61626364,         .uri = "ccnx:/foo/" CCNxNameLabel_Chunk "=abcd"     },
+        { .valid = true,  .segnum = 0x6162636465,       .uri = "ccnx:/foo/" CCNxNameLabel_Chunk "=abcde"    },
+        { .valid = true,  .segnum = 0x616263646566,     .uri = "ccnx:/foo/" CCNxNameLabel_Chunk "=abcdef"   },
+        { .valid = true,  .segnum = 0x61626364656667,   .uri = "ccnx:/foo/" CCNxNameLabel_Chunk "=abcdefg"  },
+        { .valid = true,  .segnum = 0x6162636465666768, .uri = "ccnx:/foo/" CCNxNameLabel_Chunk "=abcdefgh" },
         { .valid = false, .segnum = 0,                  .uri = NULL                                        }
     };
 
     for (int i = 0; test_vectors[i].uri != NULL; i++) {
         CCNxName *name = ccnxName_CreateFromCString(test_vectors[i].uri);
-        CCNxTlvDictionary *contentObject = ccnxContentObject_CreateWithDataPayload(name, NULL);
+        CCNxTlvDictionary *contentObject = ccnxContentObject_CreateWithNameAndPayload(name, NULL);
 
         uint64_t testSeqnum = -1;
         int failure = vegasSession_GetSegnumFromObject(contentObject, &testSeqnum);
@@ -433,7 +433,7 @@ _getVector(TestVector *vectors, uint64_t chunkNumber)
 static TransportMessage *
 _createReponseContentObject(CCNxName *name, uint64_t finalBlockid)
 {
-    CCNxContentObject *obj = ccnxContentObject_CreateWithDataPayload(name, NULL);
+    CCNxContentObject *obj = ccnxContentObject_CreateWithNameAndPayload(name, NULL);
     assertNotNull(obj, "Got null content object.");
 
     if (finalBlockid != DO_NOT_SET) {
