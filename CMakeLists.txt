@@ -18,6 +18,8 @@ include( detectCacheSize )
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 set(CMAKE_C_FLAGS_NOPANTS "${CMAKE_C_FLAGS_NOPANTS} -O3 -DNDEBUG -DCCNxTransport_DISABLE_VALIDATION -DLIBRTA_DISABLE_VALIDATION -DTransportLibrary_DISABLE_VALIDATION")
 
+include_directories(${PROJECT_SOURCE_DIR}
+                    ${PROJECT_SOURCE_DIR}/ccnx/transport/transport_rta ${PROJECT_BINARY_DIR}/ccnx)
 include_directories($ENV{CCNX_DEPENDENCIES}/include)
 set(OPENSSL_ROOT_DIR $ENV{CCNX_DEPENDENCIES})
 
@@ -36,11 +38,6 @@ include_directories(${CCNX_COMMON_INCLUDE_DIRS})
 find_package ( Threads REQUIRED )
 
 find_package ( OpenSSL REQUIRED )
-
-include_directories(${PROJECT_BINARY_DIR}/ccnx 
-                    ${PROJECT_SOURCE_DIR}
-                    ${PROJECT_SOURCE_DIR}/ccnx/transport/transport_rta
-					)
 
 find_package( Doxygen )
 
