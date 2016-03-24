@@ -187,7 +187,7 @@ createSignedContentObject(void)
 {
     CCNxName *name = ccnxName_CreateFromCString("lci:/some/name");
     PARCBuffer *payload = parcBuffer_Flip(parcBuffer_PutArray(parcBuffer_Allocate(20), 11, (uint8_t *) "the payload"));
-    CCNxTlvDictionary *contentObject = ccnxContentObject_CreateWithDataPayload(name, payload);
+    CCNxTlvDictionary *contentObject = ccnxContentObject_CreateWithNameAndPayload(name, payload);
     parcBuffer_Release(&payload);
     ccnxName_Release(&name);
 
@@ -284,7 +284,7 @@ LONGBOW_TEST_CASE(Local, vegasSession_GetSegnumFromObject)
 
     for (int i = 0; test_vectors[i].uri != NULL; i++) {
         CCNxName *name = ccnxName_CreateFromCString(test_vectors[i].uri);
-        CCNxTlvDictionary *contentObject = ccnxContentObject_CreateWithDataPayload(name, NULL);
+        CCNxTlvDictionary *contentObject = ccnxContentObject_CreateWithNameAndPayload(name, NULL);
 
         uint64_t testSeqnum = -1;
         int failure = vegasSession_GetSegnumFromObject(contentObject, &testSeqnum);

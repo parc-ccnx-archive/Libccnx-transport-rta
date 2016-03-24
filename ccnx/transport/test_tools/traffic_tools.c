@@ -121,7 +121,7 @@ trafficTools_CreateSignedContentObject()
     CCNxName *name = ccnxName_CreateFromCString("lci:/hello/dolly");
     PARCBuffer *payload = parcBuffer_WrapCString("hello");
 
-    CCNxContentObject *result = ccnxContentObject_CreateWithDataPayload(name, payload);
+    CCNxContentObject *result = ccnxContentObject_CreateWithNameAndPayload(name, payload);
 
     PARCBuffer *keyId = parcBuffer_WrapCString("keyhash");
     PARCBuffer *sigbits = parcBuffer_WrapCString("siggybits");
@@ -144,7 +144,7 @@ trafficTools_CreateContentObjectWithPayload(PARCBuffer *contents)
 {
     CCNxName *name = ccnxName_CreateFromCString("lci:/hello/dolly");
 
-    CCNxContentObject *result = ccnxContentObject_CreateWithDataPayload(name, contents);
+    CCNxContentObject *result = ccnxContentObject_CreateWithNameAndPayload(name, contents);
 
     ccnxName_Release(&name);
 
@@ -171,7 +171,7 @@ trafficTools_CreateTransportMessageWithSignedContentObjectWithName(RtaConnection
 {
     PARCBuffer *payload = parcBuffer_WrapCString("hello");
 
-    CCNxContentObject *contentObject = ccnxContentObject_CreateWithDataPayload(name, payload);
+    CCNxContentObject *contentObject = ccnxContentObject_CreateWithNameAndPayload(name, payload);
     PARCBuffer *keyId = parcBuffer_WrapCString("hash of key");
     PARCBuffer *sigbits = parcBuffer_WrapCString("sig bits");
     PARCSignature *signature = parcSignature_Create(PARCSigningAlgorithm_RSA, PARC_HASH_SHA256, sigbits);
