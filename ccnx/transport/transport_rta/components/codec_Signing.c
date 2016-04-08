@@ -64,6 +64,7 @@ component_Codec_GetSigner(RtaConnection *conn)
             parcSymmetricKeyStore_Release(&symmetricKeyStore);
 
             signer = parcSigner_Create(symmetricKeySigner, PARCSymmetricKeySignerAsSigner);
+            parcSymmetricKeySigner_Release(&symmetricKeySigner);
             assertNotNull(signer, "got null opening FileKeystore '%s'\n", params.filename);
             break;
         }
@@ -75,10 +76,12 @@ component_Codec_GetSigner(RtaConnection *conn)
 
             PARCPkcs12KeyStore *pkcs12KeyStore = parcPkcs12KeyStore_Open(params.filename, params.password, PARC_HASH_SHA256);
             PARCKeyStore *keyStore = parcKeyStore_Create(pkcs12KeyStore, PARCPkcs12KeyStoreAsKeyStore);
+            parcPkcs12KeyStore_Release(&pkcs12KeyStore);
             PARCPublicKeySigner *publicKeySigner = parcPublicKeySigner_Create(keyStore, PARCSigningAlgorithm_RSA, PARC_HASH_SHA256);
             parcKeyStore_Release(&keyStore);
 
             signer = parcSigner_Create(publicKeySigner, PARCPublicKeySignerAsSigner);
+            parcPublicKeySigner_Release(&publicKeySigner);
             assertNotNull(signer, "got null opening FileKeystore '%s'\n", params.filename);
             break;
         }
