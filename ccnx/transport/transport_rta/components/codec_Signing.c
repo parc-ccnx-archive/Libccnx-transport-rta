@@ -87,8 +87,8 @@ component_Codec_GetSigner(RtaConnection *conn)
             bool success = symmetricKeySigner_GetConnectionParams(rtaConnection_GetParameters(conn), &params);
             assertTrue(success, "Could not retrieve symmetricKeySigner_GetConnectionParams");
 
-            PARCSymmetricKeyStore *symmetricKeyStore = parcSymmetricKeyStore_OpenFile(params.filename, params.password, PARC_HASH_SHA256);
-            PARCSymmetricKeySigner *symmetricKeySigner = parcSymmetricKeySigner_Create(symmetricKeyStore, PARC_HASH_SHA256);
+            PARCSymmetricKeyStore *symmetricKeyStore = parcSymmetricKeyStore_OpenFile(params.filename, params.password, PARCCryptoHashType_SHA256);
+            PARCSymmetricKeySigner *symmetricKeySigner = parcSymmetricKeySigner_Create(symmetricKeyStore, PARCCryptoHashType_SHA256);
             parcSymmetricKeyStore_Release(&symmetricKeyStore);
 
             signer = parcSigner_Create(symmetricKeySigner, PARCSymmetricKeySignerAsSigner);
@@ -102,10 +102,10 @@ component_Codec_GetSigner(RtaConnection *conn)
             bool success = publicKeySigner_GetConnectionParams(rtaConnection_GetParameters(conn), &params);
             assertTrue(success, "Could not retrieve publicKeySigner_GetConnectionParams");
 
-            PARCPkcs12KeyStore *pkcs12KeyStore = parcPkcs12KeyStore_Open(params.filename, params.password, PARC_HASH_SHA256);
+            PARCPkcs12KeyStore *pkcs12KeyStore = parcPkcs12KeyStore_Open(params.filename, params.password, PARCCryptoHashType_SHA256);
             PARCKeyStore *keyStore = parcKeyStore_Create(pkcs12KeyStore, PARCPkcs12KeyStoreAsKeyStore);
             parcPkcs12KeyStore_Release(&pkcs12KeyStore);
-            PARCPublicKeySigner *publicKeySigner = parcPublicKeySigner_Create(keyStore, PARCSigningAlgorithm_RSA, PARC_HASH_SHA256);
+            PARCPublicKeySigner *publicKeySigner = parcPublicKeySigner_Create(keyStore, PARCSigningAlgorithm_RSA, PARCCryptoHashType_SHA256);
             parcKeyStore_Release(&keyStore);
 
             signer = parcSigner_Create(publicKeySigner, PARCPublicKeySignerAsSigner);

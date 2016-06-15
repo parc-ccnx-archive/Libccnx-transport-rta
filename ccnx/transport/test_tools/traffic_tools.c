@@ -154,7 +154,7 @@ trafficTools_CreateSignedContentObject()
     PARCBuffer *keyId = parcBuffer_WrapCString("keyhash");
     PARCBuffer *sigbits = parcBuffer_WrapCString("siggybits");
 
-    PARCSignature *signature = parcSignature_Create(PARCSigningAlgorithm_RSA, PARC_HASH_SHA256, sigbits);
+    PARCSignature *signature = parcSignature_Create(PARCSigningAlgorithm_RSA, PARCCryptoHashType_SHA256, sigbits);
     parcBuffer_Release(&sigbits);
 
     ccnxContentObject_SetSignature(result, keyId, signature, NULL);
@@ -202,7 +202,7 @@ trafficTools_CreateTransportMessageWithSignedContentObjectWithName(RtaConnection
     CCNxContentObject *contentObject = ccnxContentObject_CreateWithNameAndPayload(name, payload);
     PARCBuffer *keyId = parcBuffer_WrapCString("hash of key");
     PARCBuffer *sigbits = parcBuffer_WrapCString("sig bits");
-    PARCSignature *signature = parcSignature_Create(PARCSigningAlgorithm_RSA, PARC_HASH_SHA256, sigbits);
+    PARCSignature *signature = parcSignature_Create(PARCSigningAlgorithm_RSA, PARCCryptoHashType_SHA256, sigbits);
     parcBuffer_Release(&sigbits);
 
     ccnxContentObject_SetSignature(contentObject, keyId, signature, NULL);

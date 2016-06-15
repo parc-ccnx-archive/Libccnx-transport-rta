@@ -224,7 +224,7 @@ createSignedContentObject(void)
     parcBuffer_Release(&keyid);
 
     PARCBuffer *sigbits = parcBuffer_WrapCString("the signature");
-    PARCSignature *signature = parcSignature_Create(PARCSigningAlgorithm_RSA, PARC_HASH_SHA256, parcBuffer_Flip(sigbits));
+    PARCSignature *signature = parcSignature_Create(PARCSigningAlgorithm_RSA, PARCCryptoHashType_SHA256, parcBuffer_Flip(sigbits));
     ccnxContentObject_SetSignature(contentObject, keyid, signature, NULL);
 
     parcSignature_Release(&signature);
