@@ -62,8 +62,9 @@
  * Flow Control Algorithm
  * =========================
  * Based on TCP Vegas.  Please read the Vegas paper.  We use similar
- * variable names to the paper.  Code looks quite a bit like the linux
- * tcp_vegas.c too.
+ * variable names to the paper:
+ *  L. S. Brakmo and L. L. Peterson, "TCP Vegas: End to end congestion avoidance on a global internet."
+ *  IEEE Journal on Selected Areas in Communication, 13(8):1465--1480, October 1995.
  *
  * Here's the differences.  In CCN, an Interest is like an ACK token, it
  * gives the network permission to send.  The node issuing Interests needs
@@ -575,17 +576,9 @@ vegasSession_TimeBasedAvoidance(VegasSession *session)
         session->slow_start_threshold = fc_ssthresh(session);
         session->last_cwnd_adjust = rtaFramework_GetTicks(session->parent_framework);
     } else if (session->current_cwnd <= session->slow_start_threshold) {
-        /* Slow start */
         fc_slow_start(session);
     } else {
-        /* Congestion avoidance. */
-
-        //				if (diff > beta || session->cnt_old_segments ) {
         if (diff > beta) {
-            /* The old window was too fast, so
-             * we slow down.
-             */
-
             session->current_cwnd--;
             session->slow_start_threshold = fc_ssthresh(session);
             session->last_cwnd_adjust = rtaFramework_GetTicks(session->parent_framework);
