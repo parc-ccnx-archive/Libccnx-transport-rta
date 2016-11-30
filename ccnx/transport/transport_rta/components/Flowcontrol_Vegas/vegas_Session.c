@@ -420,7 +420,7 @@ vegasSession_RunAlgorithmOnReceive(VegasSession *session, struct fc_window_entry
 
             session->RTTVAR = ((session->RTTVAR >> 1) + (session->RTTVAR >> 2)) + (abs >> 2);
 
-            // alculate SRTT as per RFC6298
+            // Calculate SRTT as per RFC6298
             // using alpha = 1/8 and (1-alpha) = 1/2 + 1/4 + 1/8 = 7/8
             session->SRTT = (session->SRTT >> 1) + (session->SRTT >> 2) + (session->SRTT >> 3) + (abs >> 3);
 
