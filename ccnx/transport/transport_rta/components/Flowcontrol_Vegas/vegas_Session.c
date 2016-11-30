@@ -52,6 +52,27 @@
  * intellectual property used by its contributions to this software. You may
  * contact PARC at cipo@parc.com for more information or visit http://www.ccnx.org
  */
+
+/**
+ * x-kernel Version 3.3
+ * Copyright (c) 1996,1993,1991,1990  Arizona Board of Regents
+ *
+ * Permission to use, copy, modify, distribute, and sell this software
+ * and its documentation for any purpose is hereby granted without fee,
+ * provided that the above copyright appear in all copies, and that both
+ * the copyright and this permission notice appear in supporting
+ * documentation, and that the name of the University of Arizona or the
+ * Arizona Board of Regents not be used in advertising or publicity
+ * pertaining to distribution of the software without specific, written
+ * prior permission.  The University of Arizona makes no representations
+ * about the suitability of this software for any purpose.  It is
+ * provided "as is" without express or implied warranty.
+ *
+ * The University of Arizona requests users of this software to return
+ * any improvements or extensions that they make, and to grant the
+ * University of Arizona the rights to redistribute these changes.
+ */
+
 /**
  * @author Marc Mosko, Palo Alto Research Center (Xerox PARC)
  * @copyright (c) 2013-2015, Xerox Corporation (Xerox) and Palo Alto Research Center, Inc (PARC).  All rights reserved.
@@ -389,7 +410,7 @@ vegasSession_RunAlgorithmOnReceive(VegasSession *session, struct fc_window_entry
             session->RTO = session->SRTT +
                            max(rtaFramework_UsecToTicks(1000000), 4 * session->RTTVAR);
         } else {
-            // RTTVAR <- (1 - beta) * RTTVAR + beta * |SRTT - R'|
+            // calculate RTTVAR as per RFC6298
             // using beta = 1/4, so we want 3/4 * RTTVAR
             int64_t abs = ((int64_t) session->SRTT - (int64_t) fc_rtt);
 
@@ -399,7 +420,7 @@ vegasSession_RunAlgorithmOnReceive(VegasSession *session, struct fc_window_entry
 
             session->RTTVAR = ((session->RTTVAR >> 1) + (session->RTTVAR >> 2)) + (abs >> 2);
 
-            // SRTT <- (1 - alpha) * SRTT + alpha * R'
+            // alculate SRTT as per RFC6298
             // using alpha = 1/8 and (1-alpha) = 1/2 + 1/4 + 1/8 = 7/8
             session->SRTT = (session->SRTT >> 1) + (session->SRTT >> 2) + (session->SRTT >> 3) + (abs >> 3);
 
