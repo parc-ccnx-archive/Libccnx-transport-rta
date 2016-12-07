@@ -52,6 +52,54 @@
  * intellectual property used by its contributions to this software. You may
  * contact PARC at cipo@parc.com for more information or visit http://www.ccnx.org
  */
+
+/**
+ * x-kernel Version 3.3
+ * Copyright (c) 1996,1993,1991,1990  Arizona Board of Regents
+ *
+ * Permission to use, copy, modify, distribute, and sell this software
+ * and its documentation for any purpose is hereby granted without fee,
+ * provided that the above copyright appear in all copies, and that both
+ * the copyright and this permission notice appear in supporting
+ * documentation, and that the name of the University of Arizona or the
+ * Arizona Board of Regents not be used in advertising or publicity
+ * pertaining to distribution of the software without specific, written
+ * prior permission.  The University of Arizona makes no representations
+ * about the suitability of this software for any purpose.  It is
+ * provided "as is" without express or implied warranty.
+ *
+ * The University of Arizona requests users of this software to return
+ * any improvements or extensions that they make, and to grant the
+ * University of Arizona the rights to redistribute these changes.
+ */
+
+/**
+ * Portions of this code are derived from RFC 6298
+ *
+ * Copyright (c) 2011 IETF Trust and the persons identified as authors of the code. All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+ * following conditions are met:
+ *   o  Redistributions of source code must retain the above copyright notice, this list of conditions
+ *      and the following disclaimer.
+ *   o  Redistributions in binary form must reproduce the above copyright notice, this list of
+ *      conditions and the following disclaimer in the documentation and/or other materials
+ *      provided with the distribution.
+ *   o  Neither the name of Internet Society, IETF or IETF Trust, nor the names of specific
+ *      contributors, may be used to endorse or promote products derived from this
+ *      software without specific prior written permission.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND
+ *   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ *   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ *   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ *   ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ *   (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ *   OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+ *   IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 /**
  * @author Marc Mosko, Palo Alto Research Center (Xerox PARC)
  * @copyright (c) 2013-2015, Xerox Corporation (Xerox) and Palo Alto Research Center, Inc (PARC).  All rights reserved.
@@ -62,8 +110,9 @@
  * Flow Control Algorithm
  * =========================
  * Based on TCP Vegas.  Please read the Vegas paper.  We use similar
- * variable names to the paper.  Code looks quite a bit like the linux
- * tcp_vegas.c too.
+ * variable names to the paper:
+ *  L. S. Brakmo and L. L. Peterson, "TCP Vegas: End to end congestion avoidance on a global internet."
+ *  IEEE Journal on Selected Areas in Communication, 13(8):1465--1480, October 1995.
  *
  * Here's the differences.  In CCN, an Interest is like an ACK token, it
  * gives the network permission to send.  The node issuing Interests needs
@@ -388,7 +437,7 @@ vegasSession_RunAlgorithmOnReceive(VegasSession *session, struct fc_window_entry
             session->RTO = session->SRTT +
                            max(rtaFramework_UsecToTicks(1000000), 4 * session->RTTVAR);
         } else {
-            // RTTVAR <- (1 - beta) * RTTVAR + beta * |SRTT - R'|
+            // calculate RTTVAR as per RFC6298
             // using beta = 1/4, so we want 3/4 * RTTVAR
             int64_t abs = ((int64_t) session->SRTT - (int64_t) fc_rtt);
 
@@ -398,7 +447,7 @@ vegasSession_RunAlgorithmOnReceive(VegasSession *session, struct fc_window_entry
 
             session->RTTVAR = ((session->RTTVAR >> 1) + (session->RTTVAR >> 2)) + (abs >> 2);
 
-            // SRTT <- (1 - alpha) * SRTT + alpha * R'
+            // Calculate SRTT as per RFC6298
             // using alpha = 1/8 and (1-alpha) = 1/2 + 1/4 + 1/8 = 7/8
             session->SRTT = (session->SRTT >> 1) + (session->SRTT >> 2) + (session->SRTT >> 3) + (abs >> 3);
 
@@ -575,17 +624,9 @@ vegasSession_TimeBasedAvoidance(VegasSession *session)
         session->slow_start_threshold = fc_ssthresh(session);
         session->last_cwnd_adjust = rtaFramework_GetTicks(session->parent_framework);
     } else if (session->current_cwnd <= session->slow_start_threshold) {
-        /* Slow start */
         fc_slow_start(session);
     } else {
-        /* Congestion avoidance. */
-
-        //				if (diff > beta || session->cnt_old_segments ) {
         if (diff > beta) {
-            /* The old window was too fast, so
-             * we slow down.
-             */
-
             session->current_cwnd--;
             session->slow_start_threshold = fc_ssthresh(session);
             session->last_cwnd_adjust = rtaFramework_GetTicks(session->parent_framework);

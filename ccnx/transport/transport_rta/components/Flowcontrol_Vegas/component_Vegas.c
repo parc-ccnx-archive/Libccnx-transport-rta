@@ -137,8 +137,7 @@
  * Flow Control Algorithm
  * =========================
  * Based on TCP Vegas.  Please read the Vegas paper.  We use similar
- * variable names to the paper.  Code looks quite a bit like the linux
- * tcp_vegas.c too.
+ * variable names to the paper.
  *
  * Here's the differences.  In CCN, an Interest is like an ACK token, it
  * gives the network permission to send.  The node issuing Interests needs
